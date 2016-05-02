@@ -1,0 +1,69 @@
+<ion-view view-title="ลงทะเบียน">
+
+<ion-content class="padding" style="background-image:url('img/background.png')">
+
+<div class="list card">
+	<div class="item item-divider">ลงทะเบียน</div>
+	<div class="item item-body">
+
+<div class="list">
+<img src="img/guest.png" class="full-image" id="image-preview"/>
+<button class="button button-block button-positive" ng-click="select_pic()" ng-model="image"><i class="ion-plus-round"></i> เลือกรูปภาพ</button>
+ <label class="item item-input item-floating-label">
+    <span class="input-label">ชื่อผู้ใช้</span>
+    <input type="text" ng-model="register.username" name="username" placeholder="ชื่อผู้ใช้ ">
+  </label>
+   <label class="item item-input item-floating-label">
+    <span class="input-label">ชื่อ</span>
+    <input type="text" ng-model="register.firstname" name="firstname" placeholder="ชื่อ">
+  </label>
+   <label class="item item-input item-floating-label">
+    <span class="input-label">นามสกุล</span>
+    <input type="text" ng-model="register.lastname" name="lastname" placeholder="นามสกุล">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">อีเมลล์</span>
+    <input type="text" ng-model="register.email" name="email" placeholder="อีเมลล์">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">โรคประจำตัว</span>
+    <input type="text" ng-model="register.disease" name="disease" placeholder="โรคประจำตัว">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">ประวัติการแพ้ยา</span>
+    <input type="text" ng-model="register.drug_allergy" name="drug_allergy" placeholder="ประวัติการแพ้ยา">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">สิทธิการรักษา</span>
+    <input type="text" ng-model="register.treatment" name="treatment" placeholder="สิทธิการรักษา">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">แพทย์ประจำตัว</span>
+    <input type="text" ng-model="register.treatment" name="personaldoctor" placeholder="แพทย์ประจำตัว">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">โรงพยาบาลประจำ</span>
+    <input type="text" ng-model="register.treatment" name="hospital" placeholder="โรงพยาบาลประจำ">
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">รหัสผ่าน(ใส่อย่างน้อย5ตัวอักขระ)</span>
+    <input type="password" ng-model="register.password" name="password"  placeholder="รหัสผ่าน">
+  </label>
+  <p>
+   
+  <div class="row">
+ 
+  	<button class="button button-block button-positive" ng-click="register()">
+  สมัครสมาชิก
+</button>
+ 
+
+  </div>
+</div>
+</div>
+
+
+</div>
+</div>
+</ion-content>
+</ion-view>

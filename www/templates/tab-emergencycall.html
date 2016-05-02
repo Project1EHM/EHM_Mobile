@@ -1,0 +1,123 @@
+<ion-view view-title="หมายเลขฉุกเฉิน">
+<ion-content class="padding" style="background-image:url('img/background.png')">
+
+<ion-list >
+
+ 
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:0846910431">
+<h1 style="font-size:100%;"><b>084-6910431&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กาป๋องคนสวย</b> </h1>
+<i class="icon ion-ios-telephone"></i>
+<ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:191">
+<h1 style="font-size:100%;"><b>  191&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;แจ้งเหตุด่วนเหตุร้าย </b> </h1>
+<i class="icon ion-ios-telephone"></i>
+<ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:199">
+<h1 style="font-size:100%;"><b>199&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;แจ้งเหตุไฟไหม้ดับเพลิง</b> </h1>
+<i class="icon ion-ios-telephone"></i>
+<ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:1669">    
+<h1 style="font-size:100%;"><b>1669&nbsp;&nbsp;&nbsp;แพทย์ฉุกเฉิน</b> </h1>
+<i class="icon ion-ios-telephone"></i>
+<ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:1646">   
+<h1 style="font-size:100%;"><b>1646&nbsp;&nbsp;&nbsp;เรียกรถพยาบาล</b> </h1>
+<i class="icon ion-ios-telephone"></i>
+<ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:1155">
+<h1 style="font-size:100%;"><b>1155&nbsp;&nbsp;&nbsp;ตำรวจท่องเที่ยว</b> </h1>
+<i class="icon ion-ios-telephone"></i>
+<ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:076283346">
+<h1 style="font-size:100%;"><b> 076-283346 มูลนิธิภูเก็ตร่วมใจกู้ภัย </b> </h1>
+   <i class="icon ion-ios-telephone"></i>
+   <ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:076246216"> 
+ <h1 style="font-size:100%;"><b>076-246216 มูลนิธิกุศลธรรมภูเก็ต  </b> </h1>
+  <i class="icon ion-ios-telephone"></i>
+  <ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:1129"> 
+ <h1 style="font-size:100%;"><b>1129 การประปาส่วนภูมิภาค  </b> </h1>
+  <i class="icon ion-ios-telephone"></i>
+  <ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:1662"> 
+ <h1 style="font-size:100%;"><b>1662 การไฟฟ้าส่วนภูมิภาค  </b> </h1>
+  <i class="icon ion-ios-telephone"></i>
+  <ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+
+</ion-list>
+
+
+
+<ion-list ng-repeat="calldata in calldatas">
+	<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="tel:{{ calldata.numbercall }}"> 
+ <h1 style="font-size:100%;"><b>{{ calldata.numbercall }}  {{ calldata.namecall }}</b> </h1>
+  <i class="icon ion-ios-telephone"></i>
+  <ion-option-button class="button-assertive" ng-click="remove(chat)">
+Delete
+</ion-option-button>
+</ion-item>
+
+
+</ion-list>
+<ion-list>
+<ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" > 
+ 
+</ion-item>
+</ion-list>
+
+</ion-content>
+<div class="bar bar-footer bar-positive">
+
+  <div class="title"> <a class="button button-positive icon ion-person-add " id="btn-size" href="#/tab/addcall"></a> </div>
+  
+</div>
+</ion-view>

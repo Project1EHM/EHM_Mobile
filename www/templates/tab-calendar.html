@@ -1,0 +1,16 @@
+<ion-view view-title="ปฏิทิน">
+<ion-content class="padding" style="background-image:url('img/background.png')">
+
+  <!-- inspired by http://colorhunt.co/c/8184 and 
+  https://dribbble.com/shots/2407357-Calendar%60 -->
+
+  <div class="card">
+  <div class="item item-divider">
+    <center><h1>{{viewTitle}}</h1></center>
+  </div>
+    <div class="item">
+      <calendar ng-model="calendar.currentDate" calendar-mode="calendar.mode"  title-changed="onViewTitleChanged(title)" event-source="eventSource">
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

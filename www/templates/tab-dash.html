@@ -1,0 +1,55 @@
+<ion-view view-title="ข้อความแจ้งเตือน">
+<ion-content style="background-image:url('img/background.png')">
+<ion-list>
+<label class="item item-input">
+  <span class="input-label">ถึง:</span>
+  <input type="text" >
+</label>
+
+<!-- <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="friend in friends"  type="item-text-wrap" >
+<img ng-src="{{friend.images_url}}">
+<h2>{{friend.firstname}} {{friend.lastname}}</h2>
+
+</ion-item> -->
+
+<li class="item item-avatar-right item-checkbox" ng-repeat="friend in friends">
+    <img ng-src="{{friend.images_url}}">
+    <label class="checkbox">
+        <input type="checkbox" ng-checked="selection.indexOf(friend.username) > -1" ng-click="toggleSelection(friend.username)">
+    </label>
+   <h2>{{friend.firstname}} {{friend.lastname}}</h2>
+</li>
+
+<!-- <ion-list ng-repeat="chat in chats">
+  <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap"  >
+   <ion-checkbox ng-model="filter.blue">
+  <img ng-src="{{chat.face}}">
+  <h2>{{chat.name}}</h2>
+ </ion-checkbox>
+</ion-item>
+</ion-list> -->
+
+<!-- <ion-list>
+  <ion-radio ng-model="choice" ng-value="'A'">Choose A</ion-radio>
+  <ion-radio ng-model="choice" ng-value="'B'">Choose B</ion-radio>
+</ion-list> -->
+ 
+<!-- <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap"  >
+<ion-radio ng-model="choice" ng-value="'A'">
+<img ng-src="{{chat.face}}">
+<h2>{{chat.name}}</h2>
+</ion-radio>
+</ion-item>
+ -->
+
+<label class="item item-input">Comment</label>
+<label class="item item-input">
+
+    <textarea rows="4"  placeholder="Comments" ng-model="$parent.comment"></textarea>
+  </label>
+  <button class="button button-block button-positive" ng-click="sendcomment()">
+      Send
+      </button>
+</ion-list>
+</ion-content>
+</ion-view>

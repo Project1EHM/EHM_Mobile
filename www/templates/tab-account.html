@@ -1,0 +1,65 @@
+<ion-view view-title="บัญชีผู้ใช้">
+<ion-nav-buttons  side="right">
+<a class="button button-positive" href="#/tab/editaccount">แก้ไข</a>
+</ion-nav-buttons>
+<ion-content class="padding" style="background-image:url('img/background.png')">
+
+<div class="list card" data-ng-init="getaccount();">
+	
+	<ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap" >
+<img ng-src="{{account.images}}">
+<h1 style="font-size:110%;"> <b> {{account.firstname}} {{account.lastname}} </b> </h1>
+
+</ion-item>
+
+<div class="list list-inset">
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b> ชื่อผู้ใช้ : </b> {{account.username}} </h1>
+    </div>
+
+     <div class="item">
+   <h1 style="font-size:100%;"> <b> ชื่อ : </b>  {{account.firstname}} </h1>
+    </div>
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b> นามสกุล :</b>  {{account.lastname}} </h1>
+    </div>
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b>  อีเมลล์ :</b>  {{account.email}} </h1>
+    </div>
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b>  โรคประจำตัว : </b> {{account.disease}} </h1>
+    </div>
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b>  ประวัติการแพ้ยา : </b> {{account.drug_allergy}} </h1>
+    </div>
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b>  สิทธิการรักษา : </b> {{account.treatment}} </h1>
+    </div>
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b>  แพทย์ประจำตัว : </b> {{account.personaldoctor}} </h1>
+    </div>
+    
+    <div class="item">
+    <h1 style="font-size:100%;"> <b>  โรงพยาบาลประจำ : </b> {{account.hospital}} </h1>
+    </div>
+
+    <div class="item">
+    <h1 style="font-size:100%;"> <b> รายชื่อเพื่อน </b> </h1>
+    </div>
+<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="friend in friends"  type="item-text-wrap" >
+<img ng-src="{{friend.images_url}}">
+<h2>{{friend.firstname}} {{friend.lastname}}</h2>
+
+</ion-item>
+
+</div>
+</div>
+</ion-content>
+</ion-view>
