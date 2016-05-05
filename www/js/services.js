@@ -5,7 +5,7 @@ angular.module('starter.services', [])
   return {
     getaccount : function (){
      return $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/account",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/account",
       method: "POST", 
       data: {username: JSON.parse($localstorage.get('login')).username}
     });
@@ -18,7 +18,7 @@ angular.module('starter.services', [])
   return {
     getfriend : function (){
      return $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/getfriend",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/getfriend",
       method: "POST", 
       data: {username: JSON.parse($localstorage.get('login')).username}
     });
@@ -31,14 +31,14 @@ angular.module('starter.services', [])
   return {
      getcall : function (){
      return $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/getcall",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/getcall",
       method: "POST", 
       data: {username: JSON.parse($localstorage.get('login')).username}
       });
    },
    savecall : function (namecall,numebercall){
      return $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcall",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcall",
       method: "POST", 
       data: {username: JSON.parse($localstorage.get('login')).username, namecall: namecall, numbercall: numebercall}
     });

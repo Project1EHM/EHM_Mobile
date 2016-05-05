@@ -8792,6 +8792,33 @@ progress {
         box-shadow: none;
         color: #fff; }
 
+        /*Edit color button*/
+  .button.button-gray {
+    border-color: transparent;
+    background-color: #828282;
+    color: #fff; }
+    .button.button-gray:hover {
+      color: #fff;
+      text-decoration: none; }
+    .button.button-gray.active, .button.button-gray.activated {
+      background-color: #262626; }
+    .button.button-gray.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: #444; }
+    .button.button-gray.button-icon {
+      border-color: transparent;
+      background: none; }
+    .button.button-gray.button-outline {
+      border-color: #444;
+      background: transparent;
+      color: #444; }
+      .button.button-gray.button-outline.active, .button.button-gray.button-outline.activated {
+        background-color: #444;
+        box-shadow: none;
+        color: #fff; }
+
 .button-small {
   padding: 2px 4px 1px;
   min-width: 28px;

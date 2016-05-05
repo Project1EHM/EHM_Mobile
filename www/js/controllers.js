@@ -23,7 +23,7 @@ angular.module('starter.controllers', [])
 
   $scope.sendcomment = function () {
     $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/notify",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/notify",
       method: "POST", 
       data: {target_username : $scope.selection, message : $scope.comment, username: JSON.parse($localstorage.get('login')).username }
     }).success(function(response) {
@@ -83,7 +83,7 @@ angular.module('starter.controllers', [])
   $scope.autologin = function() {
     if($localstorage.get('login')) {
      $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
       method: "POST", 
       data: {username: JSON.parse($localstorage.get('login')).username, password: JSON.parse($localstorage.get('login')).password, device_token: JSON.parse($localstorage.get('push')).token}
     }).success(function(response) {
@@ -111,7 +111,7 @@ angular.module('starter.controllers', [])
 
 $scope.login = function() {
   $http({
-    url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
+    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
     method: "POST", 
     data: {username: $scope.login.username, password: $scope.login.password, device_token: JSON.parse($localstorage.get('push')).token}
   }).success(function(response) {
@@ -268,7 +268,7 @@ $scope.select_pic = function() {
 
  $scope.register = function() {
   $http({
-    url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/register",
+    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/register",
     method: "POST", 
     data: {username: $scope.register.username,firstname: $scope.register.firstname,lastname: $scope.register.lastname,
       email: $scope.register.email,disease: $scope.register.disease,drug_allergy: $scope.register.drug_allergy,
@@ -394,7 +394,7 @@ $scope.select_pic = function() {
 
  $scope.editaccount_submit = function() {
   $http({
-    url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/editaccount",
+    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/editaccount",
     method: "POST", 
     data: {username: $scope.editaccount.username, firstname: $scope.editaccount.firstname,lastname: $scope.editaccount.lastname,
       email: $scope.editaccount.email,disease: $scope.editaccount.disease,drug_allergy: $scope.editaccount.drug_allergy,
@@ -424,7 +424,7 @@ $scope.select_pic = function() {
   }
   $scope.doAddfriend = function () {
     $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addfriend",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addfriend",
       method: "POST", 
       data: {username: JSON.parse($localstorage.get('login')).username, usernamefriend: $scope.addfriend.username}
     }).success(function(response) {
@@ -471,7 +471,7 @@ $scope.select_pic = function() {
 
   $scope.sendnotify = function() {
     $http({
-      url: "http://lab.kusumotolab.com/HelperSenior/index.php/useraccount/sendhelpall",
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/sendhelpall",
       method: "POST", 
       data: {username: JSON.parse($localstorage.get('login')).username}
     }).success(function(response) {
