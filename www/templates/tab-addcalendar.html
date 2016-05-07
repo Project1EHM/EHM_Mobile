@@ -1,5 +1,5 @@
 
-<ion-view view-title="เพิ่กิจจกรมในปฤิทิน">
+<ion-view view-title="เพิ่มกิจกรรม">
 <ion-content class="padding" style="background-image:url('img/background11.jpg')">
 <ion-list>
 <div class="list list-inset">
@@ -11,11 +11,12 @@
     <span class="input-label">สถานที่ตั้ง</span>
     <input type="text" ng-model="location" name="location" placeholder="สถานที่ตั้ง">
   </label>
+  
   <div class="row">
   <div class="col col-50"</div>
   <div class="list list-inset">
   <label class="item item-input">
-    <input type="text" placeholder="จาก">
+    <input type="text" placeholder="วันที่">
   </label>
   <label class="item item-input">
     <input type="text" placeholder="เวลา">
@@ -23,35 +24,10 @@
   </div>
   </div>
 
-  <div class="row">
-  <div class="col col-50"</div>
-  <div class="list list-inset">
-  <label class="item item-input">
-    <input type="text" placeholder="ถึง">
-  </label>
-  <label class="item item-input">
-    <input type="text" placeholder="เวลา">
-  </label>
-</div>
-</div>
-</div>
 
-<div class="list list-inset">
-<label class="item item-input item-floating-label">
-    <span class="input-label">บันทึกกิจกรรม</span>
-    <input type="text" ng-model="saveactivity" name="commentactivity" placeholder="บันทึกกิจกรรม">
-  </label>
 
- <div class="row">
-  <div class="col col-50"</div>
-<button class="button button-block button-positive" ng-click="docancelCalendar()">
-ยกเลิก
-</button>
-<button class="button button-block button-positive" ng-click="dosaveCalendar()">
-บันทึก
-</button>
-</div>
-</div>
+<a class="button button-block button-calm" href="#/tab/addcalendar">บันทึก</a>
+
 
 </ion-list>
 </ion-content>
