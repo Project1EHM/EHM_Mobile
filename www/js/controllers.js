@@ -150,10 +150,39 @@ $scope.login = function() {
  }
 })
 
-.controller('AddcalendarCtrl', function($scope,$localstorage, $state) {
+.controller('AddcalendarCtrl', function($scope,$localstorage, $state,ionicDatePicker) {
+  $scope.dateData = '';
+  var ipObj1 = {
+      callback: function (val) {  //Mandatory
+        var today = new Date(val);
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
 
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        } 
+        if(mm<10){
+           mm='0'+mm
+        } 
+        var today2 = yyyy+'-'+mm+'-'+dd;
+        $scope.dateData = today2;
+        // alert(today2)
+  },
+      from: new Date(2012, 1, 1), //Optional
+      to: new Date(2016, 10, 30), //Optional
+      inputDate: new Date(),      //Optional
+      mondayFirst: true,          //Optional
+      dateFormat: 'yyyy-mm-dd',
+      closeOnSelect: false,       //Optional
+      templateType: 'popup'       //Optional
+    };
 
-})
+    $scope.openDatePicker = function(){
+      ionicDatePicker.openDatePicker(ipObj1);
+    };
+
+  })
 
 .controller('AccountCtrl', function($scope,$stateParams, Account, $http,$localstorage,$state, $ionicPopup, Friend, $timeout) {
 

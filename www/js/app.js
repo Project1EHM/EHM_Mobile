@@ -28,12 +28,36 @@ angular.module('ionic.utils', [])
   }
 }]);
 
-angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils','ui.rCalendar',])
+angular.module('starter', ['ionic' ,'ionic-datepicker','ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils','ui.rCalendar',])
+
+.config(function (ionicDatePickerProvider) {
+  var datePickerObj = {
+    inputDate: new Date(),
+    setLabel: 'Set',
+    todayLabel: 'Today',
+    closeLabel: 'Close',
+    mondayFirst: false,
+    weeksList: ["S", "M", "T", "W", "T", "F", "S"],
+    monthsList: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+    templateType: 'popup',
+    from: new Date(2012, 8, 1),
+    to: new Date(2018, 8, 1),
+    showTodayButton: true,
+    dateFormat: 'yyyy-mm-dd',
+    closeOnSelect: false,
+    disableWeekdays: [6]
+  };
+  ionicDatePickerProvider.configDatePicker(datePickerObj);
+})
 
 .run(function($ionicPlatform,$localstorage,$ionicPopup) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+
+
+
+    
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -60,32 +84,32 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
           console.log("Regid " + e.regid);
           $localstorage.setObject('push', {
             token: e.regid,
-            });
+          });
         }
         break;
 
         case 'message':
-              var alertPopup = $ionicPopup.alert({
-        title: 'ข้อความ!',
-        template: e.message
-      });
-              break;
+        var alertPopup = $ionicPopup.alert({
+          title: 'ข้อความ!',
+          template: e.message
+        });
+        break;
 
-              case 'error':
-              alert('GCM error = '+e.msg);
-              break;
+        case 'error':
+        alert('GCM error = '+e.msg);
+        break;
 
-              default:
-              alert('An unknown GCM event has occurred');
-              break;
-            }
-       }
+        default:
+        alert('An unknown GCM event has occurred');
+        break;
+      }
+    }
 
-          window.errorHandler = function(error){
-            alert('an error occured');
-          }
+    window.errorHandler = function(error){
+      alert('an error occured');
+    }
 
-          pushNotification.register(
+    pushNotification.register(
       successHandler,
       errorHandler,
       {
@@ -98,7 +122,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       }
       );
 
-        });
+  });
 })
 
 
@@ -253,7 +277,7 @@ user.save();
     }
   })
 
-.state('tab.addcalendar', {
+  .state('tab.addcalendar', {
     url: '/addcalendar',
     views: {
       'tab-listmenu': {

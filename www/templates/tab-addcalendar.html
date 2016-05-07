@@ -16,12 +16,22 @@
 
  
   <div class="list list-inset">
-  <label class="item item-input">
-    <input type="text" placeholder="วันที่">
-  </label>
-  <label class="item item-input">
-    <input type="text" placeholder="เวลา">
-  </label>
+   <div class="item item-input-inset">
+    <label class="item-input-wrapper">
+      <input type="text" placeholder="วันที่" ng-model="dateData">
+    </label>
+    <button class="button button-small" ng-click="openDatePicker()">
+     <i class="ion-ios-calendar"> </i>
+    </button>
+  </div>
+  <div class="item item-input-inset">
+    <label class="item-input-wrapper">
+      <input type="text" placeholder="Email">
+    </label>
+    <button class="button button-small" ng-click="openDatePicker()">
+     <i class="ion-ios-calendar"> </i>
+    </button>
+  </div>
   </div>
   </div>
 
