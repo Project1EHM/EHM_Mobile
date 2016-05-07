@@ -150,7 +150,10 @@ $scope.login = function() {
  }
 })
 
+.controller('AddcalendarCtrl', function($scope,$localstorage, $state) {
 
+
+})
 
 .controller('AccountCtrl', function($scope,$stateParams, Account, $http,$localstorage,$state, $ionicPopup, Friend, $timeout) {
 

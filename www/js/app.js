@@ -253,6 +253,16 @@ user.save();
     }
   })
 
+.state('tab.addcalendar', {
+    url: '/addcalendar',
+    views: {
+      'tab-listmenu': {
+        templateUrl: 'templates/tab-addcalendar.html',
+        controller: 'AddcalendarCtrl'
+      }
+    }
+  })
+
   .state('tab.emergencycall', {
     url: '/emergencycall',
     views: {
