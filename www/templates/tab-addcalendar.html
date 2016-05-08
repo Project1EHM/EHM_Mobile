@@ -6,11 +6,11 @@
 <div class="list list-inset">
 <label class="item item-input item-floating-label">
     <span class="input-label">ชื่อกิจกรรม</span>
-    <input type="text" ng-model="comment" name="comment" placeholder="ชื่อกิจกรรม">
+    <input type="text" data-ng-model="data.event" name="data.event" placeholder="ชื่อกิจกรรม">
   </label>
 <label class="item item-input item-floating-label">
     <span class="input-label">สถานที่ตั้ง</span>
-    <input type="text" ng-model="location" name="location" placeholder="สถานที่ตั้ง">
+    <input type="text" data-ng-model="data.location" name="data.location" placeholder="สถานที่ตั้ง">
   </label>
   
 
@@ -26,9 +26,9 @@
   </div>
   <div class="item item-input-inset">
     <label class="item-input-wrapper">
-      <input type="text" placeholder="Email">
+      <input type="text" placeholder="เวลา" ng-model="timeData">
     </label>
-    <button class="button button-small" ng-click="openDatePicker()">
+    <button class="button button-small" ng-click="openTimePicker()">
      <i class="ion-ios-calendar"> </i>
     </button>
   </div>
@@ -37,7 +37,7 @@
 
 
 
-<a class="button button-block button-calm" href="#/tab/addcalendar">บันทึก</a>
+<button class="button button-block button-calm" ng-click="saveEvent()">บันทึก</button>
 
 
 </ion-list>

@@ -28,14 +28,14 @@ angular.module('ionic.utils', [])
   }
 }]);
 
-angular.module('starter', ['ionic' ,'ionic-datepicker','ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils','ui.rCalendar',])
+angular.module('starter', ['ionic' ,'ionic-datepicker', 'ionic-timepicker','ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils','ui.rCalendar',])
 
 .config(function (ionicDatePickerProvider) {
   var datePickerObj = {
     inputDate: new Date(),
-    setLabel: 'Set',
-    todayLabel: 'Today',
-    closeLabel: 'Close',
+    setLabel: 'ตกลง',
+    todayLabel: 'วันนี้',
+    closeLabel: 'ปิด',
     mondayFirst: false,
     weeksList: ["S", "M", "T", "W", "T", "F", "S"],
     monthsList: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
@@ -49,6 +49,16 @@ angular.module('starter', ['ionic' ,'ionic-datepicker','ionic.service.core', 'st
   };
   ionicDatePickerProvider.configDatePicker(datePickerObj);
 })
+.config(function (ionicTimePickerProvider) {
+    var timePickerObj = {
+      inputTime: (((new Date()).getHours() * 60 * 60) + ((new Date()).getMinutes() * 60)),
+      format: 12,
+      step: 1,
+      setLabel: 'ตกลง',
+      closeLabel: 'ปิด'
+    };
+    ionicTimePickerProvider.configTimePicker(timePickerObj);
+  })
 
 .run(function($ionicPlatform,$localstorage,$ionicPopup) {
   $ionicPlatform.ready(function() {

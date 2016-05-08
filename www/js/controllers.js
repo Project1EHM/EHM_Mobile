@@ -150,8 +150,13 @@ $scope.login = function() {
  }
 })
 
-.controller('AddcalendarCtrl', function($scope,$localstorage, $state,ionicDatePicker) {
+.controller('AddcalendarCtrl', function($scope,$localstorage, $state,ionicDatePicker,ionicTimePicker,$http,$rootScope, $ionicPopup) {
   $scope.dateData = '';
+  $scope.timeData = '';
+  $scope.data = {
+    event : "",
+    location : ""
+  }
   var ipObj1 = {
       callback: function (val) {  //Mandatory
         var today = new Date(val);
@@ -160,15 +165,15 @@ $scope.login = function() {
 
         var yyyy = today.getFullYear();
         if(dd<10){
-            dd='0'+dd
+          dd='0'+dd
         } 
         if(mm<10){
-           mm='0'+mm
-        } 
-        var today2 = yyyy+'-'+mm+'-'+dd;
-        $scope.dateData = today2;
+         mm='0'+mm
+       } 
+       var today2 = yyyy+'-'+mm+'-'+dd;
+       $scope.dateData = today2;
         // alert(today2)
-  },
+      },
       from: new Date(2012, 1, 1), //Optional
       to: new Date(2016, 10, 30), //Optional
       inputDate: new Date(),      //Optional
@@ -178,11 +183,59 @@ $scope.login = function() {
       templateType: 'popup'       //Optional
     };
 
-    $scope.openDatePicker = function(){
-      ionicDatePicker.openDatePicker(ipObj1);
-    };
+    var ipObj2 = {
+    callback: function (val) {      //Mandatory
+      if (typeof (val) === 'undefined') {
+        
+      } else {
+        var selectedTime = new Date(val * 1000);
+        $scope.timeData = selectedTime.getUTCHours() + ':' + selectedTime.getUTCMinutes()
+        //console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
+      }
+    },
+    format: 24,         //Optional
+    setLabel: 'ตกลง'    //Optional
+  };
 
-  })
+$scope.openDatePicker = function(){
+  ionicDatePicker.openDatePicker(ipObj1);
+};
+
+$scope.openTimePicker = function(){
+  ionicTimePicker.openTimePicker(ipObj2);
+};
+
+$scope.saveEvent = function(){
+  $http({
+    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcalendar",
+    method: "POST", 
+    data: {username: JSON.parse($localstorage.get('login')).username, event: $scope.data.event, date: $scope.dateData, time:  $scope.timeData, location: $scope.data.location }
+  }).success(function(response) {
+
+    if (response.addcalendar == 'success') {
+
+      var alertPopup = $ionicPopup.alert({
+          title: 'สำเร็จ!',
+          template: 'บันทึกข้อมูลเรียบร้อยแล้ว'
+        });
+
+      $state.go('tab.calendar')
+
+      } else {
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: response.messagefail
+        });
+      }
+    }).error(function(response) {
+      var alertPopup = $ionicPopup.alert({
+        title: 'พบข้อผิดพลาด!',
+        template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+      });
+    });
+}
+
+})
 
 .controller('AccountCtrl', function($scope,$stateParams, Account, $http,$localstorage,$state, $ionicPopup, Friend, $timeout) {
 
