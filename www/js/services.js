@@ -26,6 +26,26 @@ angular.module('starter.services', [])
  }
 })
 
+.factory('Calendar',  function($http,$state,$localstorage){
+  var calendardata = [];
+  return {
+     getdata : function (){
+     return $http({
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/showcalendar",
+      method: "POST", 
+      data: {username: JSON.parse($localstorage.get('login')).username}
+      });
+   },
+   delete : function (calendar_id){
+     return $http({
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/deletecalendatar",
+      method: "POST", 
+      data: {username: JSON.parse($localstorage.get('login')).username, calendar_id: calendar_id}
+      });
+   }
+ }
+})
+
 .factory('CustomCall',  function($http,$state,$localstorage){
   var calldata = [];
   return {

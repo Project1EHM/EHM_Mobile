@@ -9,7 +9,7 @@
     <center><h1>{{viewTitle}}</h1></center>
   </div>
     <div class="item">
-      <calendar ng-model="calendar.currentDate" calendar-mode="calendar.mode"  title-changed="onViewTitleChanged(title)" event-source="eventSource">
+      <calendar ng-model="calendar.currentDate" calendar-mode="calendar.mode"  event-selected="onEventSelected(event)" title-changed="onViewTitleChanged(title)" event-source="calendar.eventSource">
       </div>
     </div>
 

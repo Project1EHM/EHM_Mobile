@@ -142,12 +142,18 @@ $scope.login = function() {
   }
 })
 
-.controller('ListmenuCtrl', function($scope,$localstorage, $state) {
+.controller('ListmenuCtrl', function($scope,$localstorage, $state,$http) {
 
   $scope.logout = function() {
-   $localstorage.clear();
-   $state.go('login')
- }
+   $http({
+    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/logout",
+    method: "POST", 
+    data: {username: JSON.parse($localstorage.get('login')).username}
+  }).success(function(response) {
+   $localstorage.clearLogin();
+   $state.go('login', {}, {reload: true})
+ });
+}
 })
 
 .controller('AddcalendarCtrl', function($scope,$localstorage, $state,ionicDatePicker,ionicTimePicker,$http,$rootScope, $ionicPopup) {
@@ -186,7 +192,7 @@ $scope.login = function() {
     var ipObj2 = {
     callback: function (val) {      //Mandatory
       if (typeof (val) === 'undefined') {
-        
+
       } else {
         var selectedTime = new Date(val * 1000);
         $scope.timeData = selectedTime.getUTCHours() + ':' + selectedTime.getUTCMinutes()
@@ -197,29 +203,29 @@ $scope.login = function() {
     setLabel: 'ตกลง'    //Optional
   };
 
-$scope.openDatePicker = function(){
-  ionicDatePicker.openDatePicker(ipObj1);
-};
+  $scope.openDatePicker = function(){
+    ionicDatePicker.openDatePicker(ipObj1);
+  };
 
-$scope.openTimePicker = function(){
-  ionicTimePicker.openTimePicker(ipObj2);
-};
+  $scope.openTimePicker = function(){
+    ionicTimePicker.openTimePicker(ipObj2);
+  };
 
-$scope.saveEvent = function(){
-  $http({
-    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcalendar",
-    method: "POST", 
-    data: {username: JSON.parse($localstorage.get('login')).username, event: $scope.data.event, date: $scope.dateData, time:  $scope.timeData, location: $scope.data.location }
-  }).success(function(response) {
+  $scope.saveEvent = function(){
+    $http({
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcalendar",
+      method: "POST", 
+      data: {username: JSON.parse($localstorage.get('login')).username, event: $scope.data.event, date: $scope.dateData, time:  $scope.timeData, location: $scope.data.location }
+    }).success(function(response) {
 
-    if (response.addcalendar == 'success') {
+      if (response.addcalendar == 'success') {
 
-      var alertPopup = $ionicPopup.alert({
+        var alertPopup = $ionicPopup.alert({
           title: 'สำเร็จ!',
           template: 'บันทึกข้อมูลเรียบร้อยแล้ว'
         });
 
-      $state.go('tab.calendar')
+        $state.go('tab.calendar', {}, {reload: true})
 
       } else {
         var alertPopup = $ionicPopup.alert({
@@ -233,7 +239,7 @@ $scope.saveEvent = function(){
         template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
       });
     });
-}
+  }
 
 })
 
@@ -271,14 +277,68 @@ $scope.saveEvent = function(){
 })
 
 
-.controller('CalendarCtrl', function($scope) {
- 'use strict';
+.controller('CalendarCtrl', function($scope,Calendar,$state, $ionicPopup, $cordovaLocalNotification) {
 
  $scope.calendar = {};
- $scope.viewTitle = ""
+ $scope.viewTitle = "";
+
+ $scope.$on('$ionicView.enter', function() {
+   Calendar.getdata().success(function(response) {
+    var calendardata = [];
+    response.forEach(function(entry) {
+      calendardata.push({
+        id: entry.calendar_id,
+        title: entry.event + ' - ' + entry.location,
+        startTime: new Date(entry.datetime),
+        endTime: new Date(entry.datetime),
+        allDay: false
+      });
+      $cordovaLocalNotification.cancelAll().then(function (result) {
+        var correntDate = new Date();
+        var targetDate = new Date(entry.datetime);
+        if (targetDate >= correntDate) {
+         $cordovaLocalNotification.schedule({
+          id: entry.calendar_id,
+          title: 'แจ้งเตือนปฏิทิน',
+          text: entry.event + ' - ' + entry.location,
+          at: new Date(entry.datetime) 
+        }).then(function (result) {
+        // ...
+      });
+      }
+    });
+    });
+    $scope.calendar.eventSource = calendardata
+  });
+ });
+
  $scope.changeMode = function (mode) {
   $scope.calendar.mode = mode;
 };
+
+$scope.onEventSelected = function (event) {
+ var confirmPopup = $ionicPopup.confirm({
+   title: 'คำเตือน',
+   template: 'คุณแน่ใจหรือไม่ว่าต้องการลบ?'
+ });
+ confirmPopup.then(function(res) {
+   if(res) {
+    Calendar.delete(event.id).success(function(response) {
+      var alertPopup = $ionicPopup.alert({
+        title: 'เรียบร้อย!',
+        template: 'ดำเนินการลบข้อมูฃเรียบร้อยแล้ว'
+      });
+      $state.go($state.current, {}, {reload: true});
+    }).error(function(response) {
+     var alertPopup = $ionicPopup.alert({
+      title: 'พบข้อผิดพลาด!',
+      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+    });
+   }); 
+  }
+});
+};
+
 $scope.onViewTitleChanged = function (title) {
   $scope.viewTitle = title;
 };
@@ -286,6 +346,7 @@ $scope.onViewTitleChanged = function (title) {
 $scope.today = function () {
   $scope.calendar.currentDate = new Date();
 };
+
 })
 
 

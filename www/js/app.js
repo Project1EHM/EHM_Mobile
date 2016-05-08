@@ -24,11 +24,14 @@ angular.module('ionic.utils', [])
     },
     clear: function() {
       window.localStorage.clear();
+    },
+    clearLogin: function() {
+      delete window.localStorage['login'];
     }
   }
 }]);
 
-angular.module('starter', ['ionic' ,'ionic-datepicker', 'ionic-timepicker','ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils','ui.rCalendar',])
+angular.module('starter', ['ionic' ,'ionic-datepicker', 'ionic-timepicker','ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils','ui.rCalendar','ngCordova'])
 
 .config(function (ionicDatePickerProvider) {
   var datePickerObj = {
@@ -45,7 +48,6 @@ angular.module('starter', ['ionic' ,'ionic-datepicker', 'ionic-timepicker','ioni
     showTodayButton: true,
     dateFormat: 'yyyy-mm-dd',
     closeOnSelect: false,
-    disableWeekdays: [6]
   };
   ionicDatePickerProvider.configDatePicker(datePickerObj);
 })
