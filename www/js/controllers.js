@@ -3,12 +3,13 @@ angular.module('starter.controllers', [])
 .controller('DashCtrl', function($scope, Friend,$http, $localstorage, $ionicPopup) {
  $scope.selection = [];
  $scope.comment;
-
- Friend.getfriend().success(function(data){
-  console.log(data.data)
-  $scope.friends = data.data;
-  console.log($scope.friends[0].username)
-});
+ $scope.$on('$ionicView.enter', function() {
+   Friend.getfriend().success(function(data){
+    console.log(data.data)
+    $scope.friends = data.data;
+    console.log($scope.friends[0].username)
+  });
+ });
 
    // toggle selection for a given employee by name
    $scope.toggleSelection = function toggleSelection(employeeName) {
@@ -163,6 +164,14 @@ $scope.login = function() {
     event : "",
     location : ""
   }
+  $scope.$on('$ionicView.enter', function() {
+    $scope.dateData = '';
+    $scope.timeData = '';
+    $scope.data = {
+      event : "",
+      location : ""
+    }
+  });
   var ipObj1 = {
       callback: function (val) {  //Mandatory
         var today = new Date(val);
@@ -314,6 +323,10 @@ $scope.login = function() {
 
  $scope.changeMode = function (mode) {
   $scope.calendar.mode = mode;
+};
+
+$scope.addEvent = function () {
+  $state.go('tab.addcalendar', {}, {reload: true});
 };
 
 $scope.onEventSelected = function (event) {
@@ -568,6 +581,13 @@ $scope.select_pic = function() {
   $scope.addfriend = {
     username : ''
   }
+
+  $scope.$on('$ionicView.enter', function() {
+   $scope.addfriend = {
+    username : ''
+  }
+});
+  
   $scope.doAddfriend = function () {
     $http({
       url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addfriend",
