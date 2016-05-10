@@ -559,8 +559,9 @@ $scope.select_pic = function() {
       email: $scope.editaccount.email,disease: $scope.editaccount.disease,drug_allergy: $scope.editaccount.drug_allergy,
       treatment: $scope.editaccount.treatment, personaldoctor: $scope.editaccount.personaldoctor, hospital: $scope.editaccount.hospital, password: $scope.editaccount.password ,images: $('#image-preview').attr('src')}
     }).success(function(response) {
+     
       if (response.editaccount == 'success') {
-       $state.go('login')
+       $state.go('tab.listmenu', {}, {reload: true})
      } else {
        var alertPopup = $ionicPopup.alert({
         title: 'พบข้อผิดพลาด!',
