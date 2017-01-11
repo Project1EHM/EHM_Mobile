@@ -1,0 +1,14 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+  - "6"
+  - "6.1"
+  - "5.11"
+before_install:
+  - sudo apt-get install -y openjdk-8-jdk
+install:
+  - npm install
+script:
+  - chmod +x run-scanner.sh
+  - ./run-scanner.sh
