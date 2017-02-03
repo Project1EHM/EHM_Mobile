@@ -8,50 +8,50 @@
 
 angular.module('ionic.utils', [])
 
-.factory('$localstorage', ['$window', function($window) {
+.factory('$localstorage', ['$window', function ($window) {
   return {
-    set: function(key, value) {
+    set: function (key, value) {
       window.localStorage[key] = value;
     },
-    get: function(key, defaultValue) {
+    get: function (key, defaultValue) {
       return window.localStorage[key] || defaultValue;
     },
-    setObject: function(key, value) {
+    setObject: function (key, value) {
       window.localStorage[key] = JSON.stringify(value);
     },
-    getObject: function(key) {
+    getObject: function (key) {
       return JSON.parse(window.localStorage[key] || '{}');
     },
-    clear: function() {
+    clear: function () {
       window.localStorage.clear();
     },
-    clearLogin: function() {
+    clearLogin: function () {
       delete window.localStorage['login'];
     }
   }
 }]);
 
-angular.module('starter', ['ionic' ,'ionic-datepicker', 'ionic-timepicker','ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils','ui.rCalendar','ngCordova'])
+angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'ionic.service.core', 'starter.controllers', 'starter.services', 'ionic.utils', 'ui.rCalendar', 'ngCordova'])
 
 .config(function (ionicDatePickerProvider) {
-  var datePickerObj = {
-    inputDate: new Date(),
-    setLabel: 'ตกลง',
-    todayLabel: 'วันนี้',
-    closeLabel: 'ปิด',
-    mondayFirst: false,
-    weeksList: ["S", "M", "T", "W", "T", "F", "S"],
-    monthsList: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
-    templateType: 'popup',
-    from: new Date(2012, 8, 1),
-    to: new Date(2018, 8, 1),
-    showTodayButton: true,
-    dateFormat: 'yyyy-mm-dd',
-    closeOnSelect: false,
-  };
-  ionicDatePickerProvider.configDatePicker(datePickerObj);
-})
-.config(function (ionicTimePickerProvider) {
+    var datePickerObj = {
+      inputDate: new Date(),
+      setLabel: 'ตกลง',
+      todayLabel: 'วันนี้',
+      closeLabel: 'ปิด',
+      mondayFirst: false,
+      weeksList: ["S", "M", "T", "W", "T", "F", "S"],
+      monthsList: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+      templateType: 'popup',
+      from: new Date(2012, 8, 1),
+      to: new Date(2018, 8, 1),
+      showTodayButton: true,
+      dateFormat: 'yyyy-mm-dd',
+      closeOnSelect: false,
+    };
+    ionicDatePickerProvider.configDatePicker(datePickerObj);
+  })
+  .config(function (ionicTimePickerProvider) {
     var timePickerObj = {
       inputTime: (((new Date()).getHours() * 60 * 60) + ((new Date()).getMinutes() * 60)),
       format: 12,
@@ -62,14 +62,11 @@ angular.module('starter', ['ionic' ,'ionic-datepicker', 'ionic-timepicker','ioni
     ionicTimePickerProvider.configTimePicker(timePickerObj);
   })
 
-.run(function($ionicPlatform,$localstorage,$ionicPopup) {
-  $ionicPlatform.ready(function() {
+.run(function ($ionicPlatform, $localstorage, $ionicPopup) {
+  $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
 
-
-
-    
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -79,98 +76,106 @@ angular.module('starter', ['ionic' ,'ionic-datepicker', 'ionic-timepicker','ioni
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    var pushNotification = window.plugins.pushNotification;
+
+    var push = PushNotification.init({
+      android: {
+        senderID: "1072546120442"
+      },
+      ios: {
+        alert: "true",
+        badge: "true",
+        sound: "true",
+        senderID: "1072546120442"
+      },
+      windows: {}
+    });
+
+    push.on('registration', function (data) {
+      $localstorage.setObject('push', {
+        token: data.registrationId,
+      });
+    });
     
+    push.on('notification', function (data) {
+      // data.message,
+      // data.title,
+      // data.count,
+      // data.sound,
+      // data.image,
+      // data.additionalData
+    });
 
-    window.successHandler = function(result) {
-      //alert('Callback Success! Result = '+result)
-    }
+    push.on('error', function (e) {
+      var alertPopup = $ionicPopup.alert({
+        title: 'เกิดความผิดพลาด!',
+        template: e.message
+      });
+    });
 
-    window.onNotification = function(e){
 
-      switch( e.event )
-      {
-        case 'registered':
-        if ( e.regid.length > 0 )
-        {
-          console.log("Regid " + e.regid);
-          $localstorage.setObject('push', {
-            token: e.regid,
-          });
-        }
-        break;
+    // var pushNotification = window.plugins.pushNotification;
 
-        case 'message':
-        var alertPopup = $ionicPopup.alert({
-          title: 'ข้อความ!',
-          template: e.message
-        });
-        break;
+    // var map;
 
-        case 'error':
-        alert('GCM error = '+e.msg);
-        break;
 
-        default:
-        alert('An unknown GCM event has occurred');
-        break;
-      }
-    }
+    // window.successHandler = function (result) {
+    //   //alert('Callback Success! Result = '+result)
+    // }
 
-    window.errorHandler = function(error){
-      alert('an error occured');
-    }
+    // window.onNotification = function (e) {
 
-    pushNotification.register(
-      successHandler,
-      errorHandler,
-      {
-        'badge': 'true',
-        'sound': 'true',
-        'alert': 'true',
-        'forceShow' : 'true',
-        'ecb': 'onNotification',
-        'senderID': '1072546120442',
-      }
-      );
+
+    //   switch (e.event) {
+    //     case 'registered':
+    //       if (e.regid.length > 0) {
+    //         console.log("Regid " + e.regid);
+    //         $localstorage.setObject('push', {
+    //           token: e.regid,
+    //         });
+    //       }
+    //       break;
+
+    //     case 'message':
+
+    //       var alertPopup = $ionicPopup.alert({
+    //         title: 'ข้อความ!',
+    //         template: '<div id="mapContainer" style="width:200px;height:100px;"><img src="img/maptest.png"></div>' + e.message
+    //       });
+    //       break;
+
+    //     case 'error':
+    //       alert('GCM error = ' + e.msg);
+    //       break;
+
+    //     default:
+    //       alert('An unknown GCM event has occurred');
+    //       break;
+    //   }
+    // }
+
+    // window.errorHandler = function (error) {
+    //   alert('an error occured');
+    // }
+
+    // pushNotification.register(
+    //   successHandler,
+    //   errorHandler, {
+    //     'badge': 'true',
+    //     'sound': 'true',
+    //     'alert': 'true',
+    //     'forceShow': 'true',
+    //     'ecb': 'onNotification',
+    //     'senderID': '1072546120442',
+    //   }
+    // );
 
   });
 })
 
-
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    var push = new Ionic.Push({
-      "debug": true
-    });
-
-    push.register(function(token) {
-      //alert(token._token);
-    });
-
-    // kick off the platform web client
-    Ionic.io();
-
-// this will give you a fresh user or the previously saved 'current user'
-var user = Ionic.User.current();
-
-// if the user doesn't have an id, you'll need to give it one.
-if (!user.id) {
-  user.id = Ionic.User.anonymousId();
-  // user.id = 'your-custom-user-id';
-}
-
-//persist the user
-user.save();
-
-});
-})
-
-
-.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-  $httpProvider.defaults.transformRequest = function(data){
+  $httpProvider.defaults.transformRequest = function (data) {
     if (data === undefined) {
       return data;
     }
@@ -184,7 +189,7 @@ user.save();
   $stateProvider
 
   // setup an abstract state for the tabs directive
-  .state('tab', {
+    .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
@@ -211,6 +216,17 @@ user.save();
       }
     }
   })
+
+  .state('tab.newchat', {
+    url: '/newchat',
+    views: {
+      'tab-chats': {
+        templateUrl: 'templates/tab-newchat.html',
+        controller: 'NewChatCtrl'
+      }
+    }
+  })
+
   .state('tab.chat-detail', {
     url: '/chats/:chatId',
     views: {
@@ -222,32 +238,32 @@ user.save();
   })
 
   .state('tab.siren', {
-    url: '/siren',
-    views: {
-      'tab-siren': {
-        templateUrl: 'templates/tab-siren.html',
-        controller: 'SirenCtrl'
+      url: '/siren',
+      views: {
+        'tab-siren': {
+          templateUrl: 'templates/tab-siren.html',
+          controller: 'SirenCtrl'
+        }
       }
-    }
-  })
-  .state('tab.listmenu', {
-    url: '/listmenu',
-    views: {
-      'tab-listmenu': {
-        templateUrl: 'templates/list-menu.html',
-        controller: 'ListmenuCtrl'
+    })
+    .state('tab.listmenu', {
+      url: '/listmenu',
+      views: {
+        'tab-listmenu': {
+          templateUrl: 'templates/list-menu.html',
+          controller: 'ListmenuCtrl'
+        }
       }
-    }
-  })
-  .state('tab.account', {
-    url: '/account/:chatId',
-    views: {
-      'tab-listmenu': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+    })
+    .state('tab.account', {
+      url: '/account/:chatId',
+      views: {
+        'tab-listmenu': {
+          templateUrl: 'templates/tab-account.html',
+          controller: 'AccountCtrl'
+        }
       }
-    }
-  })
+    })
 
   .state('tab.calendar', {
     url: '/calendar',

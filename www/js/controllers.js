@@ -1,18 +1,18 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, Friend,$http, $localstorage, $ionicPopup) {
- $scope.selection = [];
- $scope.comment;
- $scope.$on('$ionicView.enter', function() {
-   Friend.getfriend().success(function(data){
-    console.log(data.data)
-    $scope.friends = data.data;
-    console.log($scope.friends[0].username)
+.controller('DashCtrl', function ($scope, Friend, $http, $localstorage, $ionicPopup) {
+  $scope.selection = [];
+  $scope.comment;
+  $scope.$on('$ionicView.enter', function () {
+    Friend.getfriend().success(function (data) {
+      console.log(data.data)
+      $scope.friends = data.data;
+      console.log($scope.friends[0].username)
+    });
   });
- });
 
-   // toggle selection for a given employee by name
-   $scope.toggleSelection = function toggleSelection(employeeName) {
+  // toggle selection for a given employee by name
+  $scope.toggleSelection = function toggleSelection(employeeName) {
     var idx = $scope.selection.indexOf(employeeName);
 
     if (idx > -1) {
@@ -25,207 +25,199 @@ angular.module('starter.controllers', [])
   $scope.sendcomment = function () {
     $http({
       url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/notify",
-      method: "POST", 
-      data: {target_username : $scope.selection, message : $scope.comment, username: JSON.parse($localstorage.get('login')).username }
-    }).success(function(response) {
+      method: "POST",
+      data: {
+        target_username: $scope.selection,
+        message: $scope.comment,
+        username: JSON.parse($localstorage.get('login')).username
+      }
+    }).success(function (response) {
       console.log(response)
       if (response.notify == 'fail') {
-       var alertPopup = $ionicPopup.alert({
-        title: 'พบข้อผิดพลาด!',
-        template: 'กรุณาลองใหม่อีกครั้ง'
-      });
-     } else{
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: 'กรุณาลองใหม่อีกครั้ง'
+        });
+      } else {
+        var alertPopup = $ionicPopup.alert({
+          title: 'เรียบร้อย!',
+          template: 'ส่งข้อความสำเร็จ'
+        });
+        $scope.selection = [];
+        $scope.comment = '';
+        Friend.getfriend().success(function (data) {
+          $scope.friends = data.data;
+        });
+
+      }
+
+    }).error(function (response) {
       var alertPopup = $ionicPopup.alert({
-        title: 'เรียบร้อย!',
-        template: 'ส่งข้อความสำเร็จ'
+        title: 'พบข้อผิดพลาด!',
+        template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
       });
-      $scope.selection = [];
-      $scope.comment = '';
-      Friend.getfriend().success(function(data){
-        console.log(data.data)
-        $scope.friends = data.data;
-        console.log($scope.friends[0].username)
-      });
-
-    }
-
-  }).error(function(response) {
-    var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
     });
-  });
-}
+  }
 
 })
 
-.controller('MemberCtrl', function ($scope,$http,$rootScope,$state, $ionicPopup,$localstorage) {
-  // if($localstorage.get('login')){
-  //   $scope.login = {
-  //     username : ,
-  //     password : JSON.parse($localstorage.get('login')).password
-  //   }
-  // } else {
-    //  $scope.login = {
-    //   username : '',
-    //   password : ''
-    // }
-  // }
-
-  
-  // $localstorage.set('name', 'Max');
-  // console.log($localstorage.get('name'));
-
-
-  // var post = $localstorage.getObject('post');
-  // console.log(post);
-
-
-  $scope.autologin = function() {
-    if($localstorage.get('login')) {
-     $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
-      method: "POST", 
-      data: {username: JSON.parse($localstorage.get('login')).username, password: JSON.parse($localstorage.get('login')).password, device_token: JSON.parse($localstorage.get('push')).token}
-    }).success(function(response) {
-      if (response.login == 'success') {
-
-        $state.go('tab.siren')
-      // Ionic.Auth.login(authProvider, authSettings, loginDetails)
-      // .then(authSuccess, authFailure);
-
-    } else {
-      var alertPopup = $ionicPopup.alert({
-        title: 'พบข้อผิดพลาด!',
-        template: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'
+.controller('MemberCtrl', function ($scope, $http, $rootScope, $state, $ionicPopup, $localstorage) {
+  $scope.autologin = function () {
+    if ($localstorage.get('login')) {
+      $http({
+        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
+        method: "POST",
+        data: {
+          username: JSON.parse($localstorage.get('login')).username,
+          password: JSON.parse($localstorage.get('login')).password,
+          device_token: (typeof $localstorage.get('push') === "undefined" ? "" : JSON.parse($localstorage.get('push')).token)
+        }
+      }).success(function (response) {
+        if (response.login == 'success') {
+          $state.go('tab.siren')
+        } else {
+          var alertPopup = $ionicPopup.alert({
+            title: 'พบข้อผิดพลาด!',
+            template: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'
+          });
+        }
+      }).error(function (response) {
+        console.log(response)
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+        });
       });
     }
-  }).error(function(response) {
-    var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
-    });
-  });
-} 
-}
+  }
 
 
-$scope.login = function() {
-  $http({
-    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
-    method: "POST", 
-    data: {username: $scope.login.username, password: $scope.login.password, device_token: JSON.parse($localstorage.get('push')).token}
-  }).success(function(response) {
-
-    if (response.login == 'success') {
-
-      $localstorage.setObject('login', {
+  $scope.login = function () {
+    $http({
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
+      method: "POST",
+      data: {
         username: $scope.login.username,
         password: $scope.login.password,
-        email:  response.email
-      });
-
-      $state.go('tab.siren')
-        // Ionic.Auth.login(authProvider, authSettings, loginDetails).then(authSuccess, authFailure);
-
+        device_token: (typeof $localstorage.get('push') === "undefined" ? "" : JSON.parse($localstorage.get('push')).token)
+      }
+    }).success(function (response) {
+      if (response.login == 'success') {
+        $localstorage.setObject('login', {
+          username: $scope.login.username,
+          password: $scope.login.password,
+          user_account_id: response.user_id,
+          email: response.email
+        });
+        $state.go('tab.siren')
       } else {
         var alertPopup = $ionicPopup.alert({
           title: 'พบข้อผิดพลาด!',
           template: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'
         });
       }
-    }).error(function(response) {
+    }).error(function (response) {
+      console.log(response)
       var alertPopup = $ionicPopup.alert({
         title: 'พบข้อผิดพลาด!',
         template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
       });
-    }); 
+    });
   }
 })
 
-.controller('ListmenuCtrl', function($scope,$localstorage, $state,$http) {
+.controller('ListmenuCtrl', function ($scope, $localstorage, $state, $http) {
 
-  $scope.logout = function() {
-   $http({
-    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/logout",
-    method: "POST", 
-    data: {username: JSON.parse($localstorage.get('login')).username}
-  }).success(function(response) {
-   $localstorage.clearLogin();
-   $state.go('login', {}, {reload: true})
- });
-}
+  $scope.logout = function () {
+    $http({
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/logout",
+      method: "POST",
+      data: {
+        username: JSON.parse($localstorage.get('login')).username
+      }
+    }).success(function (response) {
+      $localstorage.clearLogin();
+      $state.go('login', {}, {
+        reload: true
+      })
+    });
+  }
 })
 
-.controller('AddcalendarCtrl', function($scope,$localstorage, $state,ionicDatePicker,ionicTimePicker,$http,$rootScope, $ionicPopup) {
+.controller('AddcalendarCtrl', function ($scope, $localstorage, $state, ionicDatePicker, ionicTimePicker, $http, $rootScope, $ionicPopup) {
   $scope.dateData = '';
   $scope.timeData = '';
   $scope.data = {
-    event : "",
-    location : ""
+    event: "",
+    location: ""
   }
-  $scope.$on('$ionicView.enter', function() {
+  $scope.$on('$ionicView.enter', function () {
     $scope.dateData = '';
     $scope.timeData = '';
     $scope.data = {
-      event : "",
-      location : ""
+      event: "",
+      location: ""
     }
   });
   var ipObj1 = {
-      callback: function (val) {  //Mandatory
-        var today = new Date(val);
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
+    callback: function (val) { //Mandatory
+      var today = new Date(val);
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0!
 
-        var yyyy = today.getFullYear();
-        if(dd<10){
-          dd='0'+dd
-        } 
-        if(mm<10){
-         mm='0'+mm
-       } 
-       var today2 = yyyy+'-'+mm+'-'+dd;
-       $scope.dateData = today2;
-        // alert(today2)
-      },
-      from: new Date(2012, 1, 1), //Optional
-      to: new Date(2016, 10, 30), //Optional
-      inputDate: new Date(),      //Optional
-      mondayFirst: true,          //Optional
-      dateFormat: 'yyyy-mm-dd',
-      closeOnSelect: false,       //Optional
-      templateType: 'popup'       //Optional
-    };
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      var today2 = yyyy + '-' + mm + '-' + dd;
+      $scope.dateData = today2;
+      // alert(today2)
+    },
+    from: new Date(2012, 1, 1), //Optional
+    //to: new Date(2016, 10, 30), //Optional
+    inputDate: new Date(), //Optional
+    mondayFirst: true, //Optional
+    dateFormat: 'yyyy-mm-dd',
+    closeOnSelect: false, //Optional
+    templateType: 'popup' //Optional
+  };
 
-    var ipObj2 = {
-    callback: function (val) {      //Mandatory
+  var ipObj2 = {
+    callback: function (val) { //Mandatory
       if (typeof (val) === 'undefined') {
 
       } else {
         var selectedTime = new Date(val * 1000);
         $scope.timeData = selectedTime.getUTCHours() + ':' + selectedTime.getUTCMinutes()
-        //console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
       }
     },
-    format: 24,         //Optional
-    setLabel: 'ตกลง'    //Optional
+    format: 24, //Optional
+    setLabel: 'ตกลง' //Optional
   };
 
-  $scope.openDatePicker = function(){
+  $scope.openDatePicker = function () {
     ionicDatePicker.openDatePicker(ipObj1);
   };
 
-  $scope.openTimePicker = function(){
+  $scope.openTimePicker = function () {
     ionicTimePicker.openTimePicker(ipObj2);
   };
 
-  $scope.saveEvent = function(){
+  $scope.saveEvent = function () {
     $http({
       url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcalendar",
-      method: "POST", 
-      data: {username: JSON.parse($localstorage.get('login')).username, event: $scope.data.event, date: $scope.dateData, time:  $scope.timeData, location: $scope.data.location }
-    }).success(function(response) {
+      method: "POST",
+      data: {
+        username: JSON.parse($localstorage.get('login')).username,
+        event: $scope.data.event,
+        date: $scope.dateData,
+        time: $scope.timeData,
+        location: $scope.data.location
+      }
+    }).success(function (response) {
 
       if (response.addcalendar == 'success') {
 
@@ -234,7 +226,9 @@ $scope.login = function() {
           template: 'บันทึกข้อมูลเรียบร้อยแล้ว'
         });
 
-        $state.go('tab.calendar', {}, {reload: true})
+        $state.go('tab.calendar', {}, {
+          reload: true
+        })
 
       } else {
         var alertPopup = $ionicPopup.alert({
@@ -242,7 +236,7 @@ $scope.login = function() {
           template: response.messagefail
         });
       }
-    }).error(function(response) {
+    }).error(function (response) {
       var alertPopup = $ionicPopup.alert({
         title: 'พบข้อผิดพลาด!',
         template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
@@ -252,214 +246,203 @@ $scope.login = function() {
 
 })
 
-.controller('AccountCtrl', function($scope,$stateParams, Account, $http,$localstorage,$state, $ionicPopup, Friend, $timeout) {
-
-
+.controller('AccountCtrl', function ($scope, $stateParams, Account, $http, $localstorage, $state, $ionicPopup, Friend, $timeout) {
   $scope.account;
   $scope.friends;
-  $scope.$on('$ionicView.enter', function() {
-
-    Account.getaccount().success(function(data){
-      console.log(data.data)
+  $scope.$on('$ionicView.enter', function () {
+    Account.getaccount().success(function (data) {
       $scope.account = data.data;
-      console.log($scope.account.username)
     });
-
-    $timeout(function() {
-      Friend.getfriend().success(function(data){
-        console.log(data.data)
+    $timeout(function () {
+      Friend.getfriend().success(function (data) {
         $scope.friends = data.data;
-        console.log($scope.friends[0].username)
       });
     }, 3000);
-
-
-
   });
-
-
-  // $scope.getfriend = Chats.get($stateParams.chatId);
-  // console.log(Chats.get($stateParams.chatId));
-  // $scope.chats = Chats.all();
-  // $scope.chats.remove(0);
-
 })
 
 
-.controller('CalendarCtrl', function($scope,Calendar,$state, $ionicPopup, $cordovaLocalNotification) {
+.controller('CalendarCtrl', function ($scope, Calendar, $state, $ionicPopup, $cordovaLocalNotification) {
 
- $scope.calendar = {};
- $scope.viewTitle = "";
+  $scope.calendar = {};
+  $scope.viewTitle = "";
 
- $scope.$on('$ionicView.enter', function() {
-   Calendar.getdata().success(function(response) {
-    var calendardata = [];
-    response.forEach(function(entry) {
-      calendardata.push({
-        id: entry.calendar_id,
-        title: entry.event + ' - ' + entry.location,
-        startTime: new Date(entry.datetime),
-        endTime: new Date(entry.datetime),
-        allDay: false
-      });
-      $cordovaLocalNotification.cancelAll().then(function (result) {
-        var correntDate = new Date();
-        var targetDate = new Date(entry.datetime);
-        if (targetDate >= correntDate) {
-         $cordovaLocalNotification.schedule({
+  $scope.$on('$ionicView.enter', function () {
+    Calendar.getdata().success(function (response) {
+      var calendardata = [];
+      response.forEach(function (entry) {
+        calendardata.push({
           id: entry.calendar_id,
-          title: 'แจ้งเตือนปฏิทิน',
-          text: entry.event + ' - ' + entry.location,
-          at: new Date(entry.datetime) 
-        }).then(function (result) {
-        // ...
+          title: entry.event + ' - ' + entry.location,
+          startTime: new Date(entry.datetime),
+          endTime: new Date(entry.datetime),
+          allDay: false
+        });
+        $cordovaLocalNotification.cancelAll().then(function (result) {
+          var correntDate = new Date();
+          var targetDate = new Date(entry.datetime);
+          if (targetDate >= correntDate) {
+            $cordovaLocalNotification.schedule({
+              id: entry.calendar_id,
+              title: 'แจ้งเตือนปฏิทิน',
+              text: entry.event + ' - ' + entry.location,
+              at: new Date(entry.datetime)
+            }).then(function (result) {
+              // ...
+            });
+          }
+        });
       });
+      $scope.calendar.eventSource = calendardata
+    });
+  });
+
+  $scope.changeMode = function (mode) {
+    $scope.calendar.mode = mode;
+  };
+
+  $scope.addEvent = function () {
+    $state.go('tab.addcalendar', {}, {
+      reload: true
+    });
+  };
+
+  $scope.onEventSelected = function (event) {
+    var confirmPopup = $ionicPopup.confirm({
+      title: 'คำเตือน',
+      template: 'คุณแน่ใจหรือไม่ว่าต้องการลบ?'
+    });
+    confirmPopup.then(function (res) {
+      if (res) {
+        Calendar.delete(event.id).success(function (response) {
+          var alertPopup = $ionicPopup.alert({
+            title: 'เรียบร้อย!',
+            template: 'ดำเนินการลบข้อมูฃเรียบร้อยแล้ว'
+          });
+          $state.go($state.current, {}, {
+            reload: true
+          });
+        }).error(function (response) {
+          var alertPopup = $ionicPopup.alert({
+            title: 'พบข้อผิดพลาด!',
+            template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+          });
+        });
       }
     });
-    });
-    $scope.calendar.eventSource = calendardata
-  });
- });
+  };
 
- $scope.changeMode = function (mode) {
-  $scope.calendar.mode = mode;
-};
+  $scope.onViewTitleChanged = function (title) {
+    $scope.viewTitle = title;
+  };
 
-$scope.addEvent = function () {
-  $state.go('tab.addcalendar', {}, {reload: true});
-};
-
-$scope.onEventSelected = function (event) {
- var confirmPopup = $ionicPopup.confirm({
-   title: 'คำเตือน',
-   template: 'คุณแน่ใจหรือไม่ว่าต้องการลบ?'
- });
- confirmPopup.then(function(res) {
-   if(res) {
-    Calendar.delete(event.id).success(function(response) {
-      var alertPopup = $ionicPopup.alert({
-        title: 'เรียบร้อย!',
-        template: 'ดำเนินการลบข้อมูฃเรียบร้อยแล้ว'
-      });
-      $state.go($state.current, {}, {reload: true});
-    }).error(function(response) {
-     var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
-    });
-   }); 
-  }
-});
-};
-
-$scope.onViewTitleChanged = function (title) {
-  $scope.viewTitle = title;
-};
-
-$scope.today = function () {
-  $scope.calendar.currentDate = new Date();
-};
+  $scope.today = function () {
+    $scope.calendar.currentDate = new Date();
+  };
 
 })
 
 
-.controller('RegisterCtrl', function($scope,$http,$rootScope,$state, $ionicPopup,$ionicActionSheet) {
+.controller('RegisterCtrl', function ($scope, $http, $rootScope, $state, $ionicPopup, $ionicActionSheet) {
 
- $scope.register = {
-  username : '',
-  firstname : '',
-  lastname : '',
-  email : '',
-  disease :'',
-  drug_allergy : '',
-  treatment : '' ,
-  personaldoctor : '',
-  hospital : '',
-  password : '',
-  lastPhoto : ''
-}
+  $scope.register = {
+    username: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    disease: '',
+    drug_allergy: '',
+    treatment: '',
+    personaldoctor: '',
+    hospital: '',
+    password: '',
+    lastPhoto: ''
+  }
 
-$scope.select_pic = function() {
-
-   // Show the action sheet
-
-   var hideSheet = $ionicActionSheet.show({
-     buttons: [
-     { text: 'ถ่ายรูปจากกล้อง' },
-     { text: 'อัพโหลดรูปภาพ' }
-     ],
-     titleText: 'อัพโหลดรูปโปรไฟล์',
-     cancelText: '<font color="red">ยกเลิก</font>',
-     cancel: function() {
-          // add cancel code..
-        },
-        buttonClicked: function(index) {
-          console.log(index)
-          if (index === 0) {
-            var options = {
-              quality: 50,
-              destinationType:0
-            };
-          } else {
-           var options = {
+  $scope.select_pic = function () {
+    var hideSheet = $ionicActionSheet.show({
+      buttons: [{
+        text: 'ถ่ายรูปจากกล้อง'
+      }, {
+        text: 'อัพโหลดรูปภาพ'
+      }],
+      titleText: 'อัพโหลดรูปโปรไฟล์',
+      cancelText: '<font color="red">ยกเลิก</font>',
+      cancel: function () {
+        // add cancel code..
+      },
+      buttonClicked: function (index) {
+        console.log(index)
+        if (index === 0) {
+          var options = {
+            quality: 50,
+            destinationType: 0
+          };
+        } else {
+          var options = {
             quality: 50,
             sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-            destinationType:0
+            destinationType: 0
           };
 
         }
 
-        navigator.camera.getPicture(onSuccess, onFail, options); 
-        //destination type was a base64 encoding
-        function onSuccess(imageData) {
-        //preview image on img tag
-        $('#image-preview').attr('src', "data:image/jpeg;base64,"+imageData);
-        //setting scope.lastPhoto 
-        $scope.register.lastPhoto = dataURItoBlob("data:image/jpeg;base64,"+imageData);
-      }
-      function onFail(message) {
-        // alert('Failed because: ' + message);
-      } 
-      return true;  
-    }
-  });
- };
+        navigator.camera.getPicture(onSuccess, onFail, options);
 
- $scope.register = function() {
-  $http({
-    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/register",
-    method: "POST", 
-    data: {username: $scope.register.username,firstname: $scope.register.firstname,lastname: $scope.register.lastname,
-      email: $scope.register.email,disease: $scope.register.disease,drug_allergy: $scope.register.drug_allergy,
-      treatment: $scope.register.treatment, personaldoctor: $scope.register.personaldoctor, hospital: $scope.register.hospital, password: $scope.register.password ,images: $('#image-preview').attr('src')}
-    }).success(function(response) {
+        function onSuccess(imageData) {
+          $('#image-preview').attr('src', "data:image/jpeg;base64," + imageData);
+          $scope.register.lastPhoto = dataURItoBlob("data:image/jpeg;base64," + imageData);
+        }
+
+        function onFail(message) {}
+        return true;
+      }
+    });
+  };
+
+  $scope.register = function () {
+    $http({
+      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/register",
+      method: "POST",
+      data: {
+        username: $scope.register.username,
+        firstname: $scope.register.firstname,
+        lastname: $scope.register.lastname,
+        email: $scope.register.email,
+        disease: $scope.register.disease,
+        drug_allergy: $scope.register.drug_allergy,
+        treatment: $scope.register.treatment,
+        personaldoctor: $scope.register.personaldoctor,
+        hospital: $scope.register.hospital,
+        password: $scope.register.password,
+        images: $('#image-preview').attr('src')
+      }
+    }).success(function (response) {
       if (response.register == 'success') {
 
-       var users = {
-        'email':  $scope.register.email,
-        'password': $scope.register.password
+        var users = {
+          'email': $scope.register.email,
+          'password': $scope.register.password
+        }
+        $state.go('login')
+      } else {
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: response.messagefail
+        });
       }
-
-      // Ionic.Auth.signup(users).then(signupSuccess, signupFailure);
-      $state.go('login')
-    } else {
-     var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: response.messagefail
+    }).error(function (response) {
+      var alertPopup = $ionicPopup.alert({
+        title: 'พบข้อผิดพลาด!',
+        template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+      });
     });
-   }
- }).error(function(response) {
-   var alertPopup = $ionicPopup.alert({
-    title: 'พบข้อผิดพลาด!',
-    template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
-  });
- }); 
-}
+  }
 })
 
-.controller('EmergencycallCtrl', function($scope,CustomCall) {
-  $scope.$on('$ionicView.enter', function() {
-    CustomCall.getcall().success(function(response) {
+.controller('EmergencycallCtrl', function ($scope, CustomCall) {
+  $scope.$on('$ionicView.enter', function () {
+    CustomCall.getcall().success(function (response) {
       $scope.calldatas = response.data;
     });
   });
@@ -467,204 +450,279 @@ $scope.select_pic = function() {
 })
 
 
-.controller('AddcallCtrl', function($scope,CustomCall,$state, $ionicPopup) {
+.controller('AddcallCtrl', function ($scope, CustomCall, $state, $ionicPopup) {
 
-  $scope.call = {
-    'name' : '',
-    'tel' : ''
-  }
-  $scope.doAddCall = function () {
-    CustomCall.savecall($scope.call.name,$scope.call.tel).success(function(response) {
-      if (response.addcall == 'success') {
+    $scope.call = {
+      'name': '',
+      'tel': ''
+    }
+    $scope.doAddCall = function () {
+      CustomCall.savecall($scope.call.name, $scope.call.tel).success(function (response) {
+        if (response.addcall == 'success') {
 
-        $state.go('tab.emergencycall', {}, {reload: true})
-      } else {
-       var alertPopup = $ionicPopup.alert({
-        title: 'พบข้อผิดพลาด!',
-        template: response.messagefail
+          $state.go('tab.emergencycall', {}, {
+            reload: true
+          })
+        } else {
+          var alertPopup = $ionicPopup.alert({
+            title: 'พบข้อผิดพลาด!',
+            template: response.messagefail
+          });
+        }
+      }).error(function (response) {
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+        });
       });
-     }
-   }).error(function(response) {
-    var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+
+    }
+  })
+  .controller('EditaccountCtrl', function ($scope, $http, $rootScope, $state, $ionicPopup, $ionicActionSheet, Account) {
+
+    $scope.editaccount;
+    $scope.$on('$ionicView.enter', function () {
+      Account.getaccount().success(function (data) {
+        console.log(data.data)
+        $scope.editaccount = data.data;
+        $('#image-preview').attr('src', $scope.editaccount.images);
+        console.log($scope.editaccount.username)
+      });
     });
-  });
 
- }
-})
-.controller('EditaccountCtrl', function($scope,$http,$rootScope,$state, $ionicPopup,$ionicActionSheet, Account) {
+    $scope.select_pic = function () {
 
-  $scope.editaccount;
-  $scope.$on('$ionicView.enter', function() {
-    Account.getaccount().success(function(data){
-      console.log(data.data)
-      $scope.editaccount = data.data;
-      $('#image-preview').attr('src', $scope.editaccount.images);
-      console.log($scope.editaccount.username)
-    });
-  });
+      // Show the action sheet
 
-  $scope.select_pic = function() {
-
-   // Show the action sheet
-
-   var hideSheet = $ionicActionSheet.show({
-     buttons: [
-     { text: 'ถ่ายรูปจากกล้อง' },
-     { text: 'อัพโหลดรูปภาพ' }
-     ],
-     titleText: 'อัพโหลดรูปโปรไฟล์',
-     cancelText: '<font color="red">ยกเลิก</font>',
-     cancel: function() {
-          // add cancel code..
-        },
-        buttonClicked: function(index) {
+      var hideSheet = $ionicActionSheet.show({
+        buttons: [{
+          text: 'ถ่ายรูปจากกล้อง'
+        }, {
+          text: 'อัพโหลดรูปภาพ'
+        }],
+        titleText: 'อัพโหลดรูปโปรไฟล์',
+        cancelText: '<font color="red">ยกเลิก</font>',
+        cancel: function () {},
+        buttonClicked: function (index) {
           console.log(index)
           if (index === 0) {
             var options = {
               quality: 50,
-              destinationType:0
+              destinationType: 0
             };
           } else {
-           var options = {
-            quality: 50,
-            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-            destinationType:0
-          };
+            var options = {
+              quality: 50,
+              sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+              destinationType: 0
+            };
 
+          }
+
+          navigator.camera.getPicture(onSuccess, onFail, options);
+
+          function onSuccess(imageData) {
+            $('#image-preview').attr('src', "data:image/jpeg;base64," + imageData);
+            $scope.editaccount.lastPhoto = dataURItoBlob("data:image/jpeg;base64," + imageData);
+          }
+
+          function onFail(message) {}
+          return true;
         }
+      });
+    };
 
-        navigator.camera.getPicture(onSuccess, onFail, options); 
-        //destination type was a base64 encoding
-        function onSuccess(imageData) {
-        //preview image on img tag
-        $('#image-preview').attr('src', "data:image/jpeg;base64,"+imageData);
-        //setting scope.lastPhoto 
-        $scope.editaccount.lastPhoto = dataURItoBlob("data:image/jpeg;base64,"+imageData);
-      }
-      function onFail(message) {
-        // alert('Failed because: ' + message);
-      } 
-      return true;  
+    $scope.editaccount_submit = function () {
+      $http({
+        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/editaccount",
+        method: "POST",
+        data: {
+          username: $scope.editaccount.username,
+          firstname: $scope.editaccount.firstname,
+          lastname: $scope.editaccount.lastname,
+          email: $scope.editaccount.email,
+          disease: $scope.editaccount.disease,
+          drug_allergy: $scope.editaccount.drug_allergy,
+          treatment: $scope.editaccount.treatment,
+          personaldoctor: $scope.editaccount.personaldoctor,
+          hospital: $scope.editaccount.hospital,
+          password: $scope.editaccount.password,
+          images: $('#image-preview').attr('src')
+        }
+      }).success(function (response) {
+
+        if (response.editaccount == 'success') {
+          $state.go('tab.listmenu', {}, {
+            reload: true
+          })
+        } else {
+          var alertPopup = $ionicPopup.alert({
+            title: 'พบข้อผิดพลาด!',
+            template: response.messagefail
+          });
+        }
+      }).error(function (response) {
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+        });
+      });
+    }
+  })
+
+
+.controller('AddfriendCtrl', function ($scope, $http, $rootScope, $state, $ionicPopup, $localstorage) {
+  $scope.addfriend = {
+    username: ''
+  }
+
+  $scope.$on('$ionicView.enter', function () {
+    $scope.addfriend = {
+      username: ''
     }
   });
- };
 
- $scope.editaccount_submit = function() {
-  $http({
-    url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/editaccount",
-    method: "POST", 
-    data: {username: $scope.editaccount.username, firstname: $scope.editaccount.firstname,lastname: $scope.editaccount.lastname,
-      email: $scope.editaccount.email,disease: $scope.editaccount.disease,drug_allergy: $scope.editaccount.drug_allergy,
-      treatment: $scope.editaccount.treatment, personaldoctor: $scope.editaccount.personaldoctor, hospital: $scope.editaccount.hospital, password: $scope.editaccount.password ,images: $('#image-preview').attr('src')}
-    }).success(function(response) {
-     
-      if (response.editaccount == 'success') {
-       $state.go('tab.listmenu', {}, {reload: true})
-     } else {
-       var alertPopup = $ionicPopup.alert({
-        title: 'พบข้อผิดพลาด!',
-        template: response.messagefail
-      });
-     }
-   }).error(function(response) {
-     var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
-    });
-   }); 
- }
-})
-
-
-.controller('AddfriendCtrl', function($scope,$http,$rootScope,$state, $ionicPopup,$localstorage) {
-  $scope.addfriend = {
-    username : ''
-  }
-
-  $scope.$on('$ionicView.enter', function() {
-   $scope.addfriend = {
-    username : ''
-  }
-});
-  
   $scope.doAddfriend = function () {
     $http({
       url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addfriend",
-      method: "POST", 
-      data: {username: JSON.parse($localstorage.get('login')).username, usernamefriend: $scope.addfriend.username}
-    }).success(function(response) {
+      method: "POST",
+      data: {
+        username: JSON.parse($localstorage.get('login')).username,
+        usernamefriend: $scope.addfriend.username
+      }
+    }).success(function (response) {
       if (response.addfriend == 'success') {
-       $state.go('tab.siren')
-     } else {
+        $state.go('tab.siren')
+      } else {
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: 'ไม่พบชื่อผู้ใช้งานในระบบ'
+        });
+      }
+    }).error(function (response) {
       var alertPopup = $ionicPopup.alert({
         title: 'พบข้อผิดพลาด!',
-        template: 'ไม่พบชื่อผู้ใช้งานในระบบ'
+        template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
       });
-    }
-  }).error(function(response) {
-    var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
     });
-  }); 
-};
-})
-
-
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats =  Chats.all();
-
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
   };
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+
+
+.controller('ChatsCtrl', function ($scope, Chats, $interval) {
+  var intervalChatPromise;
+  $scope.$on('$ionicView.enter', function () {
+    Chats.all().success(function (data) {
+      $scope.chats = data.data;
+    });
+    intervalChatPromise = $interval(function () {
+      Chats.all().success(function (data) {
+        $scope.chats = data.data;
+      });
+    }, 5000);
+  });
+
+  $scope.remove = function (chat) {
+    Chats.remove(chat);
+  };
+
+  $scope.$on("$ionicView.leave", function (event) {
+    if (intervalChatPromise) {
+      $interval.cancel(intervalChatPromise);
+    }
+  });
 })
 
-.controller('SirenCtrl', function($scope,$http,$localstorage,$state, $ionicPopup) {
+.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, $localstorage, $ionicScrollDelegate, $interval) {
 
-  $scope.sendnotify = function() {
+  $scope.data = {};
+  $scope.data.user_id = JSON.parse($localstorage.get('login')).user_account_id;
+  var intervalChatDetailPromise;
+
+  $scope.$on('$ionicView.enter', function () {
+    Chats.get($stateParams.chatId).success(function (response) {
+      $scope.messages = response.data;
+      $ionicScrollDelegate.scrollBottom();
+    });
+  });
+
+  var intervalChatDetailPromise = $interval(function () {
+    Chats.get($stateParams.chatId).success(function (response) {
+      $scope.messages = response.data;
+    });
+  }, 1000);
+
+  $scope.messageIsMine = function (user_id) {
+    return $scope.data.user_id === user_id;
+  };
+
+  $scope.getBubbleClass = function (user_id) {
+    var classname = 'from-them';
+    if ($scope.messageIsMine(user_id)) {
+      classname = 'from-me';
+    }
+    return classname;
+  };
+
+  $scope.$on("$ionicView.leave", function (event) {
+    if (intervalChatDetailPromise) {
+      $interval.cancel(intervalChatDetailPromise);
+    }
+  });
+
+  $scope.sendMessage = function (msg) {
+    Chats.send($stateParams.chatId, msg).success(function (response) {
+      Chats.get($stateParams.chatId).success(function (response) {
+        $scope.messages = response.data;
+        $ionicScrollDelegate.scrollBottom();
+        $scope.data.message = "";
+      });
+    });
+  };
+})
+
+.controller('NewChatCtrl', function ($scope, $stateParams, Friend) {
+  $scope.$on('$ionicView.enter', function () {
+    Friend.getfriend().success(function (response) {
+      $scope.chats = response.data;
+    });
+  });
+})
+
+.controller('SirenCtrl', function ($scope, $http, $localstorage, $state, $ionicPopup) {
+
+  $scope.sendnotify = function () {
     $http({
       url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/sendhelpall",
-      method: "POST", 
-      data: {username: JSON.parse($localstorage.get('login')).username}
-    }).success(function(response) {
+      method: "POST",
+      data: {
+        username: JSON.parse($localstorage.get('login')).username
+      }
+    }).success(function (response) {
 
       if (response.sendhelpall == 'success') {
-       var alertPopup = $ionicPopup.alert({
-        title: 'เรียบร้อย!',
-        template: 'แจ้งเตือนเรียบร้อย'
-      });
+        var alertPopup = $ionicPopup.alert({
+          title: 'เรียบร้อย!',
+          template: 'แจ้งเตือนเรียบร้อย'
+        });
 
-     } else {
+      } else {
+        var alertPopup = $ionicPopup.alert({
+          title: 'พบข้อผิดพลาด!',
+          template: 'มีข้อผิดพลาดระหว่างส่งข้อมูล'
+        });
+      }
+    }).error(function (response) {
       var alertPopup = $ionicPopup.alert({
         title: 'พบข้อผิดพลาด!',
-        template: 'มีข้อผิดพลาดระหว่างส่งข้อมูล'
+        template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
       });
-    }
-  }).error(function(response) {
-    var alertPopup = $ionicPopup.alert({
-      title: 'พบข้อผิดพลาด!',
-      template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
     });
-  }); 
-}
+  }
 
-$scope.settings = {
-  enableFriends: true
-};
+  $scope.settings = {
+    enableFriends: true
+  };
 
 });
