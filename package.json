@@ -22,36 +22,21 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
     "cordova-plugin-camera",
-    "cordova-plugin-compat",
     {
       "locator": "https://github.com/wymsee/cordova-imagePicker.git",
       "id": "cordova-plugin-image-picker"
     },
+    {
+      "locator": "https://github.com/phonegap-build/PushPlugin.git",
+      "id": "com.phonegap.plugins.PushPlugin"
+    },
     "cordova-plugin-media",
-    "cordova-plugin-file",
     {
       "locator": "https://github.com/katzer/cordova-plugin-local-notifications.git",
       "id": "de.appplant.cordova.plugin.local-notification"
-    },
-    "cordova-plugin-app-event",
-    {
-      "id": "phonegap-plugin-push",
-      "locator": "phonegap-plugin-push",
-      "variables": {
-        "SENDER_ID": "1072546120442"
-      }
     }
   ],
   "cordovaPlatforms": [
-    {
-      "platform": "android",
-      "version": "",
-      "locator": "android"
-    },
-    {
-      "platform": "ios",
-      "version": "",
-      "locator": "ios"
-    }
+    "android"
   ]
 }
