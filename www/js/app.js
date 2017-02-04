@@ -116,9 +116,9 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'ion
           }]
         });
       } else if (data.additionalData.defaults == 3) {
-        $timeout(function () {
-          $state.go('tab.chats');
-        }, 100);
+        // $timeout(function () {
+        //   $state.go('tab.chats');
+        // }, 100);
       } else {
         var alertPopup = $ionicPopup.alert({
           title: data.title,

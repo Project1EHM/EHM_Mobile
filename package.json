@@ -28,6 +28,7 @@
       "id": "cordova-plugin-image-picker"
     },
     "cordova-plugin-media",
+    "cordova-plugin-geolocation",
     "cordova-plugin-file",
     {
       "locator": "https://github.com/katzer/cordova-plugin-local-notifications.git",
