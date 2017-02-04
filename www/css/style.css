@@ -23,9 +23,16 @@
 	height: 230px;
 
 }
-
+#bg-login{
+  background: #F5F5DC;
+}
 #login-form{
-	padding-top: 60%;
+	padding-top: 20%;
+}
+
+#login-logo{
+  margin-top: 1cm;
+  
 }
 
 section.chats div {

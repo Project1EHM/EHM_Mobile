@@ -1,5 +1,5 @@
-<ion-view view-title="Chats">
-  <ion-content style="background-image:url('img/bg_emer1.jpg')">
+<ion-view view-title="สนทนา">
+  <ion-content id="bg-login">
     <ion-list>
       <ion-item class="item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.desc_id}}">
         <img ng-src="{{chat.desc_images_url}}">
@@ -13,9 +13,9 @@
       </ion-item>
     </ion-list>
   </ion-content>
-  <div class="bar bar-footer bar-calm">
+  <div class="bar bar-footer bar-assertive">
     <div class="title">
-      <a class="button button-calm icon ion-person-add " id="btn-size" href="#/tab/newchat"></a>
+      <a class="button button-assertive icon ion-person-add " id="btn-size" href="#/tab/newchat"></a>
     </div>
   </div>
 </ion-view>
