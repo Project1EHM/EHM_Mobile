@@ -62,7 +62,7 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'ion
     ionicTimePickerProvider.configTimePicker(timePickerObj);
   })
 
-.run(function ($ionicPlatform, $localstorage, $ionicPopup) {
+.run(function ($ionicPlatform, $localstorage, $ionicPopup, $state, $rootScope, $timeout, LocationFromNotification) {
   $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -95,8 +95,37 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'ion
         token: data.registrationId,
       });
     });
-    
+
     push.on('notification', function (data) {
+      if (data.additionalData.defaults == 2) {
+        var myPopup = $ionicPopup.show({
+          title: data.title,
+          template: data.message,
+          scope: $rootScope,
+          buttons: [{
+            text: 'ปิด'
+          }, {
+            text: '<b>ดูสถานที่</b>',
+            type: 'button-positive',
+            onTap: function (e) {
+              $timeout(function () {
+                LocationFromNotification.location = data.additionalData.location
+                $state.go('tab.map');
+              }, 100);
+            }
+          }]
+        });
+      } else if (data.additionalData.defaults == 3) {
+        $timeout(function () {
+          $state.go('tab.chats');
+        }, 100);
+      } else {
+        var alertPopup = $ionicPopup.alert({
+          title: data.title,
+          template: data.message,
+        });
+      }
+
       // data.message,
       // data.title,
       // data.count,
@@ -331,6 +360,15 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'ion
     controller: 'MemberCtrl'
   })
 
+  .state('tab.map', {
+    url: '/map',
+    views: {
+      'tab-siren': {
+        templateUrl: 'templates/tab-map.html',
+        controller: 'MapCtrl'
+      }
+    }
+  })
 
   .state('register', {
     url: '/register',

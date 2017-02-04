@@ -4,7 +4,8 @@
       <ion-item class="item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.desc_id}}">
         <img ng-src="{{chat.desc_images_url}}">
         <h2>{{chat.desc_name}}</h2>
-        <p>{{chat.message}}</p>
+        <p ng-if="chat.message_type == 'message'">{{chat.message}}</p>
+        <p ng-if="chat.message_type == 'sticker'">Send Sticker!</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
         <ion-option-button class="button-assertive" ng-click="remove(chat)">
           Delete

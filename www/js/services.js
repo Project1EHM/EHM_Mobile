@@ -5,7 +5,7 @@ angular.module('starter.services', [])
   return {
     getaccount: function () {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/account",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/account",
         method: "POST",
         data: {
           username: JSON.parse($localstorage.get('login')).username
@@ -15,12 +15,19 @@ angular.module('starter.services', [])
   }
 })
 
+.factory('LocationFromNotification', function () {
+  return {
+    username: "",
+    location: ""
+  }
+})
+
 .factory('Friend', function ($http, $state, $localstorage) {
   var friend = [];
   return {
     getfriend: function () {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/getfriend",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/getfriend",
         method: "POST",
         data: {
           username: JSON.parse($localstorage.get('login')).username
@@ -35,7 +42,7 @@ angular.module('starter.services', [])
   return {
     getdata: function () {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/showcalendar",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/showcalendar",
         method: "POST",
         data: {
           username: JSON.parse($localstorage.get('login')).username
@@ -44,7 +51,7 @@ angular.module('starter.services', [])
     },
     delete: function (calendar_id) {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/deletecalendatar",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/deletecalendatar",
         method: "POST",
         data: {
           username: JSON.parse($localstorage.get('login')).username,
@@ -60,7 +67,7 @@ angular.module('starter.services', [])
   return {
     getcall: function () {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/getcall",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/getcall",
         method: "POST",
         data: {
           username: JSON.parse($localstorage.get('login')).username
@@ -69,7 +76,7 @@ angular.module('starter.services', [])
     },
     savecall: function (namecall, numebercall) {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcall",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/addcall",
         method: "POST",
         data: {
           username: JSON.parse($localstorage.get('login')).username,
@@ -86,7 +93,7 @@ angular.module('starter.services', [])
   return {
     all: function () {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/chat/friendlist",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/chat/friendlist",
         method: "POST",
         data: {
           source_user: JSON.parse($localstorage.get('login')).user_account_id
@@ -98,7 +105,7 @@ angular.module('starter.services', [])
     },
     get: function (desc_user) {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/chat/getmessage",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/chat/getmessage",
         method: "POST",
         data: {
           source_user: JSON.parse($localstorage.get('login')).user_account_id,
@@ -106,15 +113,22 @@ angular.module('starter.services', [])
         }
       });
     },
-    send: function (desc_user, message) {
+    send: function (desc_user, message, message_type) {
       return $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/chat/send",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/chat/send",
         method: "POST",
         data: {
           source_user: JSON.parse($localstorage.get('login')).user_account_id,
           target_user: desc_user,
-          message: message
+          message: message,
+          type: message_type
         }
+      });
+    },
+    sticker: function() {
+      return $http({
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/chat/sticker",
+        method: "POST"
       });
     }
   };

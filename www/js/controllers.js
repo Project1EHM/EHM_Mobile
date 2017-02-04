@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
 
   $scope.sendcomment = function () {
     $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/notify",
+      url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/notify",
       method: "POST",
       data: {
         target_username: $scope.selection,
@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
   $scope.autologin = function () {
     if ($localstorage.get('login')) {
       $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/login",
         method: "POST",
         data: {
           username: JSON.parse($localstorage.get('login')).username,
@@ -94,7 +94,7 @@ angular.module('starter.controllers', [])
 
   $scope.login = function () {
     $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/login",
+      url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/login",
       method: "POST",
       data: {
         username: $scope.login.username,
@@ -130,7 +130,7 @@ angular.module('starter.controllers', [])
 
   $scope.logout = function () {
     $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/logout",
+      url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/logout",
       method: "POST",
       data: {
         username: JSON.parse($localstorage.get('login')).username
@@ -208,7 +208,7 @@ angular.module('starter.controllers', [])
 
   $scope.saveEvent = function () {
     $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addcalendar",
+      url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/addcalendar",
       method: "POST",
       data: {
         username: JSON.parse($localstorage.get('login')).username,
@@ -402,7 +402,7 @@ angular.module('starter.controllers', [])
 
   $scope.register = function () {
     $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/register",
+      url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/register",
       method: "POST",
       data: {
         username: $scope.register.username,
@@ -534,7 +534,7 @@ angular.module('starter.controllers', [])
 
     $scope.editaccount_submit = function () {
       $http({
-        url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/editaccount",
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/editaccount",
         method: "POST",
         data: {
           username: $scope.editaccount.username,
@@ -584,7 +584,7 @@ angular.module('starter.controllers', [])
 
   $scope.doAddfriend = function () {
     $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/addfriend",
+      url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/addfriend",
       method: "POST",
       data: {
         username: JSON.parse($localstorage.get('login')).username,
@@ -634,7 +634,7 @@ angular.module('starter.controllers', [])
   });
 })
 
-.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, $localstorage, $ionicScrollDelegate, $interval) {
+.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, $localstorage, $ionicScrollDelegate, $interval, $ionicModal) {
 
   $scope.data = {};
   $scope.data.user_id = JSON.parse($localstorage.get('login')).user_account_id;
@@ -657,6 +657,40 @@ angular.module('starter.controllers', [])
     return $scope.data.user_id === user_id;
   };
 
+  $ionicModal.fromTemplateUrl('templates/sticker.html', {
+    scope: $scope
+  }).then(function (modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.openModal = function () {
+    $scope.modal.show();
+    Chats.sticker().success(function (data) {
+      $scope.sticker = data.data;
+    });
+  };
+  $scope.$on('$destroy', function () {
+    $scope.modal.remove();
+  });
+
+  $scope.sendSticker = function (sticker_path) {
+    Chats.send($stateParams.chatId, sticker_path, 'sticker').success(function (response) {
+      Chats.get($stateParams.chatId).success(function (response) {
+        $scope.messages = response.data;
+        $ionicScrollDelegate.scrollBottom();
+        $scope.data.message = "";
+        $scope.modal.hide()
+      });
+    });
+  }
+
+  $scope.createContact = function (u) {
+    $scope.contacts.push({
+      name: u.firstName + ' ' + u.lastName
+    });
+    $scope.modal.hide();
+  };
+
   $scope.getBubbleClass = function (user_id) {
     var classname = 'from-them';
     if ($scope.messageIsMine(user_id)) {
@@ -672,7 +706,7 @@ angular.module('starter.controllers', [])
   });
 
   $scope.sendMessage = function (msg) {
-    Chats.send($stateParams.chatId, msg).success(function (response) {
+    Chats.send($stateParams.chatId, msg, 'message').success(function (response) {
       Chats.get($stateParams.chatId).success(function (response) {
         $scope.messages = response.data;
         $ionicScrollDelegate.scrollBottom();
@@ -690,39 +724,70 @@ angular.module('starter.controllers', [])
   });
 })
 
-.controller('SirenCtrl', function ($scope, $http, $localstorage, $state, $ionicPopup) {
+.controller('MapCtrl', function ($scope, $state, $cordovaGeolocation, LocationFromNotification) {
+    var latLngTemp = LocationFromNotification.location.split(',');
+    var latLng = new google.maps.LatLng(latLngTemp[0],latLngTemp[1])
+    var mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    marker = new google.maps.Marker({
+      position: latLng,
+      map: $scope.map,
+      animation: google.maps.Animation.DROP,
+    });
 
-  $scope.sendnotify = function () {
-    $http({
-      url: "https://lab.kusumotolab.com/HelperSenior/index.php/useraccount/sendhelpall",
-      method: "POST",
-      data: {
-        username: JSON.parse($localstorage.get('login')).username
-      }
-    }).success(function (response) {
+})
 
-      if (response.sendhelpall == 'success') {
-        var alertPopup = $ionicPopup.alert({
-          title: 'เรียบร้อย!',
-          template: 'แจ้งเตือนเรียบร้อย'
-        });
+.controller('SirenCtrl', function ($scope, $http, $localstorage, $state, $ionicPopup, $cordovaGeolocation) {
 
-      } else {
+  var options = {
+    timeout: 10000,
+    enableHighAccuracy: true
+  };
+
+  $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+    $scope.sendnotify = function () {
+      $http({
+        url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/sendhelpall",
+        method: "POST",
+        data: {
+          username: JSON.parse($localstorage.get('login')).username,
+          location: position.coords.latitude + ',' + position.coords.longitude
+        }
+      }).success(function (response) {
+        if (response.sendhelpall == 'success') {
+          var alertPopup = $ionicPopup.alert({
+            title: 'เรียบร้อย!',
+            template: 'แจ้งเตือนเรียบร้อย'
+          });
+
+        } else {
+          var alertPopup = $ionicPopup.alert({
+            title: 'พบข้อผิดพลาด!',
+            template: 'มีข้อผิดพลาดระหว่างส่งข้อมูล'
+          });
+        }
+      }).error(function (response) {
         var alertPopup = $ionicPopup.alert({
           title: 'พบข้อผิดพลาด!',
-          template: 'มีข้อผิดพลาดระหว่างส่งข้อมูล'
+          template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
         });
-      }
-    }).error(function (response) {
-      var alertPopup = $ionicPopup.alert({
-        title: 'พบข้อผิดพลาด!',
-        template: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
       });
-    });
-  }
+    }
 
-  $scope.settings = {
-    enableFriends: true
-  };
+    $scope.settings = {
+      enableFriends: true
+    };
+  }, function (error) {
+    var alertPopup = $ionicPopup.alert({
+      title: 'พบข้อผิดพลาด!',
+      template: 'ไม่สามารถดึงข้อมููลที่อยู่ได้'
+    });
+  });
+
+
 
 });
