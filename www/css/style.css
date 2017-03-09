@@ -12,6 +12,18 @@
   font-size: 40px;
 }
 
+@font-face {
+  font-family: 'Athiti';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Athiti'), local('Athiti-Regular'), url(https://fonts.gstatic.com/s/athiti/v1/pYoQHeGXyaTSYFFZroFwBvesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+  unicode-range: U+0E01-0E5B, U+200B-200D, U+25CC;
+}
+
+#test-font{
+  font-family: 'Athiti' , sans-serif;
+  font-size: 36px;
+}
 
 #btn-size {
 	width: 100%;
