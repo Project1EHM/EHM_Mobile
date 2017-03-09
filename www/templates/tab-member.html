@@ -4,12 +4,12 @@
 
 <center><img src="img/logo_EHM02.png" alt="HTML5 Icon" style="width:200px;height:200px;" id="login-logo"></center>
 		<div class="list" data-ng-init="autologin()" id="login-form">
-			<label class="item item-input test-font" >
-				<span class="input-label" >ชื่อผู้ใช้</span>
+			<label class="item item-input" >
+				<span class="input-label" id="test-font" >ชื่อผู้ใช้ นุสรา</span>
 				<input type="text" data-ng-model="login.username" data-ng-init="username" name="username">
 			</label>
-			<label class="item item-input test-font" >
-				<span class="input-label">รหัสผ่าน</span>
+			<label class="item item-input" >
+				<span class="input-label" id="test-font">รหัสผ่าน</span>
 				<input type="password" data-ng-model="login.password" data-ng-init="password" name="password">
 			</label>
 			<button class="button button-block button-calm" ng-click="login()" >
