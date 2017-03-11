@@ -32,13 +32,9 @@
 
 
 @font-face {
-  font-family: 'Athiti';
- 
-  src: url('../fonts/Athiti.woff2');
-  src: url('../fonts/Athiti.woff2') format('embedded-opentype'),
-       url('../fonts/Athiti.woff2') format('woff2'),
-       url('../fonts/Athiti.woff2') format('truetype'),
-       url('../fonts/Athiti.woff2') format('svg');
+  font-family: "Athiti";
+  src: url("../fonts/Athiti.woff");
+  src: url("../fonts/Athiti.woff")  format("woff");
   font-style: normal;
   font-weight: 400;
 }
