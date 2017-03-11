@@ -37,7 +37,10 @@
   src: url("../fonts/Athiti.woff")  format("woff");
   font-style: normal;
   font-weight: 400; }
-.ion, .ionicons,
+ body{  
+  font-family: 'Athiti', sans-serif;}
+
+.ion, .ionicons,  
 .ion-alert:before,
 .ion-alert-circled:before,
 .ion-android-add:before,
