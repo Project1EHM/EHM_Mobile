@@ -540,6 +540,7 @@ angular.module('starter.controllers', [])
           username: $scope.editaccount.username,
           firstname: $scope.editaccount.firstname,
           lastname: $scope.editaccount.lastname,
+          id_card: $scope.editaccount.id_card,
           email: $scope.editaccount.email,
           disease: $scope.editaccount.disease,
           drug_allergy: $scope.editaccount.drug_allergy,
