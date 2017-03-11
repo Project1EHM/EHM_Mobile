@@ -33,11 +33,10 @@
 
 @font-face {
   font-family: "Athiti";
-  src: url("../fonts/Athiti.woff");
+  src: url("../fonts/Athiti.woff2") format("woff2");
   src: url("../fonts/Athiti.woff")  format("woff");
   font-style: normal;
-  font-weight: 400;
-}
+  font-weight: 400; }
 .ion, .ionicons,
 .ion-alert:before,
 .ion-alert-circled:before,
@@ -773,7 +772,7 @@
 .ion-wrench:before,
 .ion-xbox:before {
   display: inline-block;
-  font-family: "Ionicons";
+  font-family: "Athiti";
   speak: none;
   font-style: normal;
   font-weight: normal;
