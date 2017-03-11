@@ -23,22 +23,21 @@
   used under CC BY http://creativecommons.org/licenses/by/4.0/
   Modified icons to fit ionicon’s grid from original.
 */
-/*@font-face {
+@font-face {
   font-family: "Ionicons";
   src: url("../fonts/ionicons.eot?v=2.0.1");
   src: url("../fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("../fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("../fonts/ionicons.woff?v=2.0.1") format("woff"), url("../fonts/ionicons.woff") format("woff"), url("../fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
   font-weight: normal;
-  font-style: normal; }*/
+  font-style: normal; }
 
 
-@font-face {
+/*@font-face {
   font-family: "Athiti";
   src: url("../fonts/Athiti.woff2") format("woff2");
   src: url("../fonts/Athiti.woff")  format("woff");
   font-style: normal;
-  font-weight: 400; }
- body{  
-  font-family: 'Athiti', sans-serif;}
+  font-weight: 400; }*/
+
 
 .ion, .ionicons,  
 .ion-alert:before,
@@ -775,7 +774,7 @@
 .ion-wrench:before,
 .ion-xbox:before {
   display: inline-block;
-  font-family: "Athiti";
+  font-family: "Ionicons";
   speak: none;
   font-style: normal;
   font-weight: normal;
