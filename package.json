@@ -23,6 +23,8 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-camera",
     "cordova-plugin-compat",
+    "cordova-plugin-dbcopy",
+    "cordova-sqlite-storage",
     {
       "locator": "https://github.com/wymsee/cordova-imagePicker.git",
       "id": "cordova-plugin-image-picker"

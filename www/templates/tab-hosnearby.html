@@ -1,0 +1,11 @@
+<ion-view view-title="โรงพยาบาลใกล้เคียง">
+  <ion-content id="bg-login">
+    <ion-list ng-repeat="hospital in hospitallist">
+     <ion-item type="item-text-wrap">
+        <h2>{{ hospital.result.name }}</h2>
+        <small>{{ hospital.result.address }}</small>
+        <p><strong>ระยะห่าง : </strong> {{ hospital.distance }} เมตร</p>
+     </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
