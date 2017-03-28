@@ -24,16 +24,10 @@
     "cordova-plugin-camera",
     "cordova-plugin-compat",
     {
-      "locator": "https://github.com/an-rahulpandey/cordova-plugin-dbcopy.git",
-      "id": "cordova-plugin-dbcopy"
-    },
-    "cordova-sqlite-storage",
-    {
       "locator": "https://github.com/wymsee/cordova-imagePicker.git",
       "id": "cordova-plugin-image-picker"
     },
     "cordova-plugin-media",
-    "cordova-plugin-geolocation",
     "cordova-plugin-file",
     {
       "locator": "https://github.com/katzer/cordova-plugin-local-notifications.git",
@@ -46,7 +40,10 @@
       "variables": {
         "SENDER_ID": "1072546120442"
       }
-    }
+    },
+    "cordova-plugin-geolocation",
+    "cordova-plugin-dbcopy",
+    "cordova-sqlite-storage"
   ],
   "cordovaPlatforms": [
     {
