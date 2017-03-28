@@ -62,10 +62,10 @@ angular.module('starter.controllers', [])
 
   .controller('MemberCtrl', function ($scope, $http, $rootScope, $state, $ionicPopup, $localstorage, $ionicLoading) {
     $scope.autologin = function () {
-      $ionicLoading.show({
-        template: 'กำลังโหลด...'
-      })
       if ($localstorage.get('login')) {
+        $ionicLoading.show({
+          template: 'กำลังโหลด...'
+        })
         $http({
           url: "https://windows.kusumotolab.com/HelperSenior/index.php/useraccount/login",
           method: "POST",
