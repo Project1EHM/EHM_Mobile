@@ -33,6 +33,12 @@
       "locator": "https://github.com/katzer/cordova-plugin-local-notifications.git",
       "id": "de.appplant.cordova.plugin.local-notification"
     },
+    "cordova-plugin-geolocation",
+    {
+      "locator": "https://github.com/an-rahulpandey/cordova-plugin-dbcopy.git",
+      "id": "cordova-plugin-dbcopy"
+    },
+    "cordova-sqlite-storage",
     "cordova-plugin-app-event",
     {
       "id": "phonegap-plugin-push",
@@ -40,10 +46,7 @@
       "variables": {
         "SENDER_ID": "1072546120442"
       }
-    },
-    "cordova-plugin-geolocation",
-    "cordova-plugin-dbcopy",
-    "cordova-sqlite-storage"
+    }
   ],
   "cordovaPlatforms": [
     {
