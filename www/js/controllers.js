@@ -762,13 +762,6 @@ angular.module('starter.controllers', [])
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
         HospitalLocation.gethospital(position, function (rs) {
           for (var i = 0; i < rs.rows.length; i++) {
-            //   console.log(findDistance({
-            //   latitude: position.coords.latitude,
-            //   longitude: position.coords.longitude
-            // }, {
-            //   latitude: rs.rows.item(i).latitude,
-            //  longitude: rs.rows.item(i).longitude
-            // }))
             $scope.hospitallist_temp.push({
               result: rs.rows.item(i),
               distance: HospitalLocation.calculateDistance({
