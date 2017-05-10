@@ -81,5 +81,32 @@
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <allow-navigation href="http://192.168.50.116:8100" />
+    <plugin name="cordova-plugin-app-event">
+        <variable name="id" value="phonegap-plugin-push" />
+        <variable name="locator" value="phonegap-plugin-push" />
+        <variable name="variables" value="[object Object]" />
+    </plugin>
+    <plugin name="cordova-plugin-camera" />
+    <plugin name="cordova-plugin-compat" />
+    <plugin name="cordova-plugin-console" />
+    <plugin name="cordova-plugin-device" />
+    <plugin name="cordova-plugin-file" />
+    <plugin name="cordova-plugin-geolocation">
+        <variable name="locator" value="https://github.com/an-rahulpandey/cordova-plugin-dbcopy.git" />
+        <variable name="id" value="cordova-plugin-dbcopy" />
+    </plugin>
+    <plugin name="cordova-plugin-image-picker">
+        <variable name="locator" value="https://github.com/wymsee/cordova-imagePicker.git" />
+        <variable name="id" value="cordova-plugin-image-picker" />
+    </plugin>
+    <plugin name="cordova-plugin-media" />
+    <plugin name="cordova-plugin-splashscreen" />
+    <plugin name="cordova-plugin-statusbar" />
+    <plugin name="cordova-plugin-whitelist" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
+    <plugin name="de.appplant.cordova.plugin.local-notification">
+        <variable name="locator" value="https://github.com/katzer/cordova-plugin-local-notifications.git" />
+        <variable name="id" value="de.appplant.cordova.plugin.local-notification" />
+    </plugin>
+    <plugin name="ionic-plugin-keyboard" />
 </widget>
