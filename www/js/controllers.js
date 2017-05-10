@@ -699,10 +699,18 @@ angular.module('starter.controllers', [])
       $scope.modal.hide();
     };
 
-    $scope.getBubbleClass = function (user_id) {
+    $scope.getBubbleClass = function (user_id, message_type) {
       var classname = 'from-them';
       if ($scope.messageIsMine(user_id)) {
-        classname = 'from-me';
+        if (message_type == 'sticker') {
+          classname = 'from-me-img';
+        } else {
+          classname = 'from-me';
+        }
+      } else {
+        if (message_type == 'sticker') {
+          classname = 'from-them-img';
+        }
       }
       return classname;
     };

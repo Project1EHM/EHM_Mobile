@@ -4,7 +4,7 @@
       <span ng-repeat="message in messages">
       <span ng-show="!message.notification">
         <p class="username" ng-show="!messageIsMine(message.src_user_id)">{{message.src_name}}</p>
-        <div ng-class='getBubbleClass(message.src_user_id)'>
+        <div ng-class='getBubbleClass(message.src_user_id, message.message_type)'>
           <img src="{{ message.message }}" ng-if="message.message_type == 'sticker'">
           <p ng-bind="message.message" ng-if="message.message_type == 'message'"></p>
         </div>
