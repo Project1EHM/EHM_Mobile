@@ -260,6 +260,16 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'ion
         }
       })
 
+      .state('tab.hosdetail', {
+        url: '/hosdetail/:hosId',
+        views: {
+          'tab-hosnearby': {
+            templateUrl: 'templates/tab-hosdetail.html',
+            controller: 'HospitalDetailCtrl'
+          }
+        }
+      })
+
       .state('tab.newchat', {
         url: '/newchat',
         views: {

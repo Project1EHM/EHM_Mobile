@@ -1,0 +1,15 @@
+<ion-view view-title="{{ hos[0].name }}">
+    <ion-content id="bg-login">
+        <div class="list list-inset">
+        <div class="item">
+          <h1 style="font-size:100%;"> <b>{{hos[0].name}}</b></h1>
+        </div>
+        <div class="item-text-wrap">
+          <h1 style="font-size:100%;">{{hos[0].address}}</h1>
+        </div>
+        <div class="item">
+          <h1 style="font-size:100%;"> <b> โทร : </b>{{hos[0].telephone}}</h1>
+        </div>
+        <a class="button button-block button-assertive" href="geo:?daddr={{hos[0].latitude}}:{{hos[0].longitude}}" target="_system">นำทาง</a>
+    </ion-content>
+</ion-view>

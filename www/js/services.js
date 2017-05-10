@@ -15,6 +15,25 @@ angular.module('starter.services', [])
     }
   })
 
+  .factory('HospitalDetail', function () {
+    return {
+      gethospitalDetail: function (hosId, callback) {
+        var db = window.sqlitePlugin.openDatabase({
+          name: 'niems.db',
+          location: 'default'
+        });
+        db.transaction(function(tx) {
+          tx.executeSql('select * from hospitals where id = ?', [hosId], callback)
+        }, function(error) {
+          console.log('transaction error: ' + error.message);
+          db.close();
+        }, function() {
+          db.close();
+        });
+      }
+    }
+  })
+
   .factory('HospitalLocation', function () {
     return {
       gethospital: function (position, callback) {
@@ -22,10 +41,14 @@ angular.module('starter.services', [])
           name: 'niems.db',
           location: 'default'
         });
-        db.executeSql('select * from hospitals', [], callback),
-          function (err) {
-            console.log(err.message)
-          };
+        db.transaction(function(tx) {
+          tx.executeSql('select * from hospitals', [], callback)
+        }, function(error) {
+          console.log('transaction error: ' + error.message);
+          db.close();
+        }, function() {
+          db.close();
+        });
       },
       calculateDistance: function (gps1, gps2) {
         var BETWEEN_DEGREE = 15;

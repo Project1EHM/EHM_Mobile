@@ -768,7 +768,7 @@ angular.module('starter.controllers', [])
     })
 
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-        HospitalLocation.gethospital(position, function (rs) {
+        HospitalLocation.gethospital(position, function (tx, rs) {
           for (var i = 0; i < rs.rows.length; i++) {
             $scope.hospitallist_temp.push({
               result: rs.rows.item(i),
@@ -795,6 +795,19 @@ angular.module('starter.controllers', [])
           template: 'ไม่สามารถดึงข้อมููลที่อยู่ได้'
         });
       }
+  })
+
+  .controller('HospitalDetailCtrl', function($scope, HospitalDetail, $stateParams, $ionicLoading) {
+    $scope.hos = [];
+    $ionicLoading.show({
+      template: 'กำลังโหลด...'
+    })
+    HospitalDetail.gethospitalDetail($stateParams.hosId, function (tx, rs) { 
+        for (var i = 0; i < rs.rows.length; i++) {
+            $scope.hos.push(rs.rows.item(i))
+        }
+        $ionicLoading.hide();
+     });
   })
 
   .controller('SirenCtrl', function ($scope, $http, $localstorage, $state, $ionicPopup, $cordovaGeolocation, Notification, $ionicLoading) {
